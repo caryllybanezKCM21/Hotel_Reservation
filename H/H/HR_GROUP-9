@@ -1,0 +1,728 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NORACAFRA HOTEL — Reservation System</title>
+  <meta name="description" content="NORACAFRA HOTEL reservation system." />
+
+  <style>
+    :root{
+      --accent:#0ea5e9;
+      --accent-dark:#0284c7;
+      --muted:#6b7280;
+      --card:#ffffff;
+      --bg:#f3f6fb;
+      --success:#10b981;
+      --danger:#ef4444;
+      --max-w:1100px;
+      --radius:12px;
+      --shadow: 0 8px 30px rgba(2,6,23,0.08);
+      --glass: rgba(255,255,255,0.6);
+      --glass-dark: rgba(0,0,0,0.25);
+      --font-sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:var(--font-sans);background:var(--bg);color:#0f172a;-webkit-font-smoothing:antialiased}
+
+    /* Header */
+    header{background:linear-gradient(90deg,var(--accent-dark),var(--accent));color:white;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+    header h1{margin:0;font-size:18px;letter-spacing:1px}
+    nav.app-nav{display:flex;gap:8px;align-items:center}
+    nav.app-nav button{background:transparent;color:white;border:1px solid rgba(255,255,255,0.15);padding:8px 10px;border-radius:8px;cursor:pointer}
+
+    /* Container */
+    .container{max-width:var(--max-w);margin:22px auto;padding:0 16px}
+
+    /* Front page: Centered square sign-in form */
+    #frontPage{display:flex;justify-content:center;align-items:center;min-height:60vh}
+    .sign-in-card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:0 6px 18px rgba(2,6,23,0.06);width:400px;height:400px;display:flex;flex-direction:column}
+
+    /* Cards, forms, utilities */
+    .muted{color:var(--muted)}
+    .small{font-size:13px}
+    label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+    input[type="text"],input[type="password"],select,input[type="date"],input[type="number"],textarea{width:100%;padding:8px;border-radius:8px;border:1px solid #e6e9ef;font-size:14px}
+    button{cursor:pointer;border:0;padding:8px 12px;border-radius:8px;font-weight:600}
+    .btn-primary{background:var(--accent-dark);color:white}
+    .btn-ghost{background:white;border:1px solid #e6e9ef}
+
+    /* App layout */
+    .app{display:grid;grid-template-columns:250px 1fr;gap:18px;margin-top:18px}
+    .sidebar{background:var(--card);padding:14px;border-radius:12px;min-height:70vh}
+    .sidebar h4{margin:0 0 8px}
+    .menu{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+    .menu button{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border-radius:8px;border:1px solid transparent;background:transparent}
+    .menu button.active{background:#eef9ff;border-color:#dff6ff}
+    .content{min-height:70vh}
+    .section{display:none;background:var(--card);padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.04)}
+    .section.active{display:block}
+
+    .grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+    .room-card{border-radius:10px;overflow:hidden;background:#fff;border:1px solid #eef2f7}
+    .room-card img{width:100%;height:140px;object-fit:cover;display:block}
+    .room-card .body{padding:10px}
+
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,0.45);z-index:50}
+    .modal .modal-card{width:100%;max-width:680px;background:white;padding:18px;border-radius:12px}
+
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:8px;border-bottom:1px solid #f1f5f9;text-align:left}
+    .text-right{text-align:right}
+
+    footer{margin:28px 0;text-align:center;color:var(--muted)}
+
+    /* Responsive */
+    @media (max-width:980px){
+      .app{grid-template-columns:1fr}
+      .sidebar{order:2}
+      .sign-in-card{width:300px;height:300px} /* Smaller square on mobile */
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>NORACAFRA HOTEL — Reservation System</h1>
+  <nav class="app-nav">
+    <button id="homeBtn">Home</button>
+    <button id="signInBtn">Sign In</button>
+  </nav>
+</header>
+
+<!-- Front page: Centered square sign-in form -->
+<div class="container" id="frontPage">
+  <div class="sign-in-card">
+    <h3>Sign In</h3>
+    <p class="small muted">Sign in as Guest, Staff or Admin.</p>
+
+    <div style="margin-top:10px;flex:1">
+      <label>Role</label>
+      <select id="roleSelect">
+        <option value="guest">Guest</option>
+        <option value="staff">Staff</option>
+        <option value="admin">Admin</option>
+      </select>
+
+      <label style="margin-top:10px">Username</label>
+      <input id="username" type="text" placeholder="e.g. guest1">
+
+      <label style="margin-top:10px">Password</label>
+      <input id="password" type="password" placeholder="(any value)">
+
+      <div style="margin-top:12px;display:flex;gap:8px">
+        <button class="btn-primary" id="signInPrimary">Sign In</button>
+        <button class="btn-ghost" id="openRegisterBtn">Register</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- App container (hidden until login) -->
+<div class="container" id="appContainer" style="display:none">
+  <div class="app">
+    <aside class="sidebar">
+      <h4 id="welcomeUser">Welcome</h4>
+      <div class="small muted" id="userRole">Role: -</div>
+      <hr style="margin:10px 0">
+
+      <ul class="menu" id="menuList">
+        <li><button data-show="dashboard" class="active">Dashboard</button></li>
+        <li><button data-show="mybookings">My Bookings</button></li>
+        <li><button data-show="rooms">Room Types</button></li>
+        <li><button data-show="dining">Dining & Restaurant</button></li>
+        <li><button data-show="spa">Spa & Wellness</button></li>
+        <li><button data-show="events">Event Halls</button></li>
+        <li><button data-show="other">Other Amenities</button></li>
+        <li><button data-show="makeReservation">Make a Reservation</button></li>
+        <li><button data-show="loyalty">Loyalty Rewards</button></li>
+        <li><button data-show="reports">Reports</button></li>
+        <li><button id="logoutBtn" style="color:var(--danger)">Log Out</button></li>
+      </ul>
+    </aside>
+
+    <main class="content">
+      <!-- Dashboard -->
+      <section id="dashboard" class="section active">
+        <h3>Dashboard</h3>
+        <p class="small">Quick overview and notifications</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
+          <div class="card" style="padding:12px;flex:1;min-width:200px">
+            <div class="small muted">My Bookings</div>
+            <div id="countBookings" style="font-weight:700;font-size:20px">0</div>
+          </div>
+          <div class="card" style="padding:12px;min-width:200px">
+            <div class="small muted">Notifications</div>
+            <div id="notifList" style="margin-top:8px">No notifications</div>
+          </div>
+          <div class="card" style="padding:12px;min-width:200px">
+            <div class="small muted">Pending Payments</div>
+            <div id="pendingPayments">0</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- My Bookings -->
+      <section id="mybookings" class="section">
+        <h3>My Bookings</h3>
+        <p class="small">Upcoming Stays / Past Stays</p>
+        <div style="margin-top:12px;display:flex;gap:8px">
+          <button id="upcomingBtn" class="btn-ghost">Upcoming Stays</button>
+          <button id="pastBtn" class="btn-ghost">Past Stays</button>
+        </div>
+        <div id="bookingsTable" style="margin-top:12px"></div>
+      </section>
+
+      <!-- Rooms -->
+      <section id="rooms" class="section">
+        <h3>Room Types</h3>
+        <p class="small">Available room types and prices</p>
+        <div class="grid-3" id="roomsGrid" style="margin-top:12px"></div>
+      </section>
+
+      <!-- Dining -->
+      <section id="dining" class="section">
+        <h3>Dining & Restaurant</h3>
+        <p class="small">Reserve tables or check menu.</p>
+        <div style="margin-top:12px">
+          <p class="muted">We offer all-day dining, room service, and a tasting menu on weekends.</p>
+        </div>
+      </section>
+
+      <!-- Spa -->
+      <section id="spa" class="section">
+        <h3>Spa & Wellness</h3>
+        <p class="small">Book spa sessions and wellness packages.</p>
+        <div style="margin-top:12px">
+          <p class="muted">Signature massage, sauna, and yoga classes available.</p>
+
+        </div>
+      </section>
+
+      <!-- Events -->
+      <section id="events" class="section">
+        <h3>Event Halls</h3>
+        <p class="small">Host events, weddings, or conferences.</p>
+        <div style="margin-top:12px">
+          <p class="muted">Multiple setups: theater, classroom, banquet.</p>
+        </div>
+      </section>
+
+      <!-- Other -->
+      <section id="other" class="section">
+        <h3>Other Amenities</h3>
+        <ul>
+          <li>Airport shuttle</li>
+          <li>Gym</li>
+          <li>Kids play area</li>
+        </ul>
+      </section>
+
+      <!-- Make Reservation -->
+      <section id="makeReservation" class="section">
+        <h3>Make a Reservation</h3>
+        <div style="margin-top:8px" class="small muted">1) Select room type and dates → 2) Fill booking form → 3) Confirm payment (simulated)</div>
+
+        <div style="margin-top:12px;display:grid;gap:8px">
+          <div>
+            <label>Room Type</label>
+            <select id="selectRoomType"></select>
+          </div>
+
+          <div style="display:flex;gap:8px">
+            <div style="flex:1">
+              <label>Check-In</label>
+              <input type="date" id="bookCheckIn">
+            </div>
+            <div style="flex:1">
+              <label>Check-Out</label>
+              <input type="date" id="bookCheckOut">
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px">
+            <div style="flex:1">
+              <label>Guests</label>
+              <input type="number" id="bookGuests" min="1" value="2">
+            </div>
+            <div style="flex:1">
+              <label>Extras</label>
+              <select id="bookExtras">
+                <option value="none">None</option>
+                <option value="breakfast">Breakfast included</option>
+                <option value="spa">Spa voucher</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px">
+            <button class="btn-primary" id="checkAvailBtn">Check Availability</button>
+            <button class="btn-ghost" id="resetMakeBtn">Reset</button>
+          </div>
+
+          <div id="availabilityResult" style="margin-top:12px"></div>
+
+          <!-- Booking form -->
+          <div id="bookingFormWrap" style="display:none;margin-top:12px" class="card">
+            <h4>Booking Form</h4>
+            <div style="display:grid;gap:8px">
+              <label>Full Name</label>
+              <input id="bfName" type="text">
+              <label>Contact Number</label>
+              <input id="bfContact" type="text">
+              <label>Email</label>
+              <input id="bfEmail" type="text">
+              <div style="display:flex;gap:8px">
+                <button class="btn-primary" id="proceedPaymentBtn">Proceed to Payment</button>
+                <button class="btn-ghost" id="cancelBookingFormBtn">Cancel</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment simulation -->
+      </section>
+
+      <!-- Reports -->
+      <section id="reports" class="section">
+        <h3>Reports & Booking History</h3>
+        <p class="small muted">Download booking history or invoices.</p>
+        <div style="margin-top:12px">
+          <button id="bookingHistoryBtn" class="btn-ghost">Booking History</button>
+          <button id="dailyReportBtn" class="btn-ghost">Generate Daily Report</button>
+          <button id="monthlyReportBtn" class="btn-ghost">Generate Monthly Report</button>
+        </div>
+
+        <div id="reportsArea" style="margin-top:12px"></div>
+      </section>
+
+      <!-- Admin Panel: only visible to admins (managed via JS) -->
+      <section id="adminPanel" class="section" style="display:none">
+        <h3>Admin Panel</h3>
+        <p class="small muted">Manage reservations, rooms and users</p>
+        <div style="margin-top:12px">
+          <button id="manageReservationsBtn" class="btn-ghost">Manage Reservations</button>
+          <button id="manageRoomsBtn" class="btn-ghost">Manage Rooms/Services</button>
+          <button id="managePaymentsBtn" class="btn-ghost">Payments & Billing</button>
+          <button id="manageUsersBtn" class="btn-ghost">User Management</button>
+        </div>
+        <div id="adminArea" style="margin-top:12px"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer>© <span id="year"></span> NORACAFRA HOTEL</footer>
+</div>
+
+<!-- Modals -->
+<div id="loginModal" class="modal" aria-hidden>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <h3 id="loginTitle">Sign In</h3>
+    <p class="small muted">Use role + username. Password optional.</p>
+    <div style="display:grid;gap:8px;margin-top:8px">
+      <label>Role</label>
+      <select id="mRole"><option value="guest">Guest</option><option value="staff">Staff</option><option value="admin">Admin</option></select>
+      <label>Username</label>
+      <input id="mUser" type="text">
+      <label>Password</label>
+      <input id="mPass" type="password">
+      <div style="display:flex;gap:8px">
+        <button class="btn-primary" id="loginModalSubmit">Sign In</button>
+        <button class="btn-ghost" id="loginModalCancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="registerModal" class="modal" aria-hidden>
+  <div class="modal-card" role="dialog" aria-modal="true">
+    <h3>Register (Guest)</h3>
+    <div style="display:grid;gap:8px;margin-top:8px">
+      <label>Username</label><input id="rUser">
+      <label>Full name</label><input id="rName">
+      <label>Contact</label><input id="rContact
+<!-- Hidden anchor for downloads -->
+<a id="downloadAnchor" style="display:none"></a>
+
+<script>
+/**
+ * NORACAFRA HOTEL — Rewritten single-file frontend demo
+ * - Organized, modular functions
+ * - Uses localStorage to persist demo users/bookings
+ * - Complete availability check
+ * - Simple role-based UI (guest, staff, admin)
+ */
+
+// --- Demo data ---
+const rooms = [
+  { id: 'r1', name: 'Standard Room', price: 2800, img:'https://i.pinimg.com/1200x/ab/56/68/ab56689a873e0136ff76a84d69f27b08.jpg', qty:5 },
+  { id: 'r2', name: 'Deluxe Room', price: 4200, img:'https://i.pinimg.com/736x/d3/59/f3/d359f321a1a7b4ae01b67286afc47c3a.jpg', qty:3 },
+  { id: 'r3', name: 'Suite', price: 7200, img:'https://i.pinimg.com/1200x/06/d4/e3/06d4e3fb3727eb7a36b592c87a834973.jpg', qty:2 }
+];
+
+let bookings = JSON.parse(localStorage.getItem('demo_bookings') || '[]');
+let users = JSON.parse(localStorage.getItem('demo_users') || JSON.stringify([
+  {username:'guest1',role:'guest',name:'Guest One'},
+  {username:'staff1',role:'staff',name:'Staff One'},
+  {username:'admin1',role:'admin',name:'Admin One'}
+]));
+let currentUser = null;
+let provisional = null; // holds booking before payment
+
+// --- Init UI ---
+document.getElementById('year').innerText = new Date().getFullYear();
+renderRooms();
+renderRoomsGrid();
+renderRoomsSelect();
+updateCounts();
+bindUI();
+
+// --- UI binding ---
+function bindUI(){
+  // header buttons
+  document.getElementById('signInBtn').addEventListener('click', toggleLoginModal);
+  document.getElementById('homeBtn').addEventListener('click', goHome);
+
+  // front page
+  document.getElementById('signInPrimary').addEventListener('click', frontPageSignIn);
+  document.getElementById('openRegisterBtn').addEventListener('click', () => openModal('registerModal'));
+  document.querySelectorAll('[data-show]').forEach(b=> b.addEventListener('click', e=> showSection(e.currentTarget.dataset.show)));
+
+  // modal buttons
+  document.getElementById('loginModalSubmit').addEventListener('click', loginModalSubmit);
+  document.getElementById('loginModalCancel').addEventListener('click', () => closeModal('loginModal'));
+
+  document.getElementById('registerUserBtn').addEventListener('click', registerUser);
+  document.getElementById('registerCancelBtn').addEventListener('click', () => closeModal('registerModal'));
+
+  // make reservation
+  document.getElementById('checkAvailBtn').addEventListener('click', checkAvailability);
+  document.getElementById('resetMakeBtn').addEventListener('click', resetMake);
+  document.getElementById('proceedPaymentBtn').addEventListener('click', submitBooking);
+  document.getElementById('cancelBookingFormBtn').addEventListener('click', cancelBookingForm);
+  document.getElementById('completePaymentBtn').addEventListener('click', completePayment);
+  document.getElementById('goToBookingsBtn').addEventListener('click', () => { showSection('mybookings'); renderBookings('upcoming')});
+  document.getElementById('downloadInvoiceBtn').addEventListener('click', () => { downloadInvoice(); });
+
+  // bookings
+  document.getElementById('upcomingBtn').addEventListener('click', () => renderBookings('upcoming'));
+  document.getElementById('pastBtn').addEventListener('click', () => renderBookings('past'));
+
+  // reports
+  document.getElementById('bookingHistoryBtn').addEventListener('click', renderAllBookings);
+  document.getElementById('dailyReportBtn').addEventListener('click', generateDailyReport);
+  document.getElementById('monthlyReportBtn').addEventListener('click', generateMonthlyReport);
+
+  // admin
+  document.getElementById('manageRoomsBtn').addEventListener('click', renderRoomsAdmin);
+  document.getElementById('managePaymentsBtn').addEventListener('click', renderPayments);
+  document.getElementById('manageUsersBtn').addEventListener('click', renderUsers);
+  document.getElementById('manageReservationsBtn').addEventListener('click', renderAllBookings);
+
+  // logout
+  document.getElementById('logoutBtn').addEventListener('click', logout);
+
+  // register modal open
+  document.getElementById('openRegisterBtn')?.addEventListener('click', () => openModal('registerModal'));
+}
+
+// --- Auth & user flows ---
+function frontPageSignIn(){
+  const role = document.getElementById('roleSelect').value;
+  const username = (document.getElementById('username').value || (role+'1')).trim();
+  attemptLogin({username,role});
+}
+
+function toggleLoginModal(){
+  const m = document.getElementById('loginModal');
+  if(m.style.display === 'flex') closeModal('loginModal'); else openModal('loginModal');
+}
+function openModal(id){ const m=document.getElementById(id); if(m){ m.style.display='flex'; m.setAttribute('aria-hidden','false'); } }
+function closeModal(id){ const m=document.getElementById(id); if(m){ m.style.display='none'; m.setAttribute('aria-hidden','true'); } }
+
+function loginModalSubmit(){
+  const role = document.getElementById('mRole').value;
+  const username = (document.getElementById('mUser').value || (role+'1')).trim();
+  attemptLogin({username,role});
+}
+
+function attemptLogin({username,role}){
+  // Admin and staff must exist; guests can be auto-created.
+  let user = users.find(u=>u.username===username);
+  if(!user){
+    if(role==='guest'){
+      user = {username,role:'guest',name:username};
+      users.push(user);
+      persistUsers();
+    } else {
+      alert('User not found. Use admin1/staff1 for admin/staff demos.');
+      return;
+    }
+  }
+
+  // login success
+  currentUser = user;
+  showApp();
+  document.getElementById('welcomeUser').innerText = 'Welcome, ' + (user.name || user.username);
+  document.getElementById('userRole').innerText = 'Role: ' + (user.role || role);
+  closeModal('loginModal');
+  document.getElementById('adminPanel').style.display = (user.role==='admin' ? 'block' : 'none');
+  updateCounts();
+}
+
+function registerUser(){
+  const u = (document.getElementById('rUser').value || '').trim();
+  const name = (document.getElementById('rName').value || u).trim();
+  const contact = (document.getElementById('rContact').value || '').trim();
+  if(!u){ alert('Enter username'); return; }
+  if(users.find(x=>x.username===u)){ alert('Username exists'); return; }
+  users.push({username:u,role:'guest',name:name,contact});
+  persistUsers();
+  alert('Registered. You can now sign in as '+u);
+  closeModal('registerModal');
+}
+
+function persistUsers(){ localStorage.setItem('demo_users', JSON.stringify(users)); }
+function persistBookings(){ localStorage.setItem('demo_bookings', JSON.stringify(bookings)); }
+
+function showApp(){ document.getElementById('frontPage').style.display='none'; document.getElementById('appContainer').style.display='block'; }
+function goHome(){ document.getElementById('frontPage').style.display='block'; document.getElementById('appContainer').style.display='none'; currentUser=null; }
+
+// --- Navigation & sections ---
+function showSection(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  const s = document.getElementById(id);
+  if(s) s.classList.add('active');
+
+  document.querySelectorAll('#menuList button').forEach(b=>b.classList.remove('active'));
+  const btn = Array.from(document.querySelectorAll('#menuList button')).find(b=>b.dataset.show===id);
+  if(btn) btn.classList.add('active');
+}
+
+// --- Rooms rendering ---
+function renderRooms(){
+  const wrap = document.getElementById('roomsGrid');
+  wrap.innerHTML='';
+  rooms.forEach(r=>{
+    const el = document.createElement('div');
+    el.className='room-card';
+    el.innerHTML = `\n      <img src="${r.img}" alt="${r.name}">\n      <div class="body">\n        <strong>${r.name}</strong>\n        <div class="small muted">₱${r.price} / night</div>\n        <div style="margin-top:8px"><button class="btn-ghost" data-reserve="${r.id}">Reserve</button></div>\n      </div>`;
+    wrap.appendChild(el);
+  });
+
+  // bind reserve buttons
+  wrap.querySelectorAll('[data-reserve]').forEach(b=> b.addEventListener('click', e => startReserve(e.currentTarget.dataset.reserve)));
+}
+function renderRoomsGrid(){ renderRooms(); }
+function renderRoomsSelect(){
+  const sel = document.getElementById('selectRoomType');
+  sel.innerHTML='';
+  rooms.forEach(r=> sel.innerHTML += `<option value="${r.id}">${r.name} — ₱${r.price}</option>`);
+}
+
+function startReserve(roomId){ showSection('makeReservation'); document.getElementById('selectRoomType').value = roomId; }
+
+// --- Reservation flow ---
+function resetMake(){
+  document.getElementById('bookCheckIn').value='';
+  document.getElementById('bookCheckOut').value='';
+  document.getElementById('bookGuests').value='2';
+  document.getElementById('bookExtras').value='none';
+  document.getElementById('availabilityResult').innerHTML='';
+  document.getElementById('bookingFormWrap').style.display='none';
+  document.getElementById('paymentWrap').style.display='none';
+  document.getElementById('bookingSuccess').style.display='none';
+  provisional = null;
+}
+
+function checkAvailability(){
+  const rid = document.getElementById('selectRoomType').value;
+  const checkIn = document.getElementById('bookCheckIn').value;
+  const checkOut = document.getElementById('bookCheckOut').value;
+  if(!checkIn || !checkOut){ alert('Select dates'); return; }
+  if(new Date(checkOut) <= new Date(checkIn)){ alert('Check-out must be after check-in'); return; }
+
+  const r = rooms.find(x=>x.id===rid);
+  if(!r){ alert('Room not found'); return; }
+
+  // Count overlapping bookings for that room (confirmed or paid)
+  const overlapping = bookings.filter(b=> b.roomId === rid && !(new Date(b.checkOut) <= new Date(checkIn) || new Date(b.checkIn) >= new Date(checkOut)));
+  const available = Math.max(0, r.qty - overlapping.length);
+
+  document.getElementById('availabilityResult').innerHTML = `<div class="card small">Availability: <strong>${available}</strong> room(s) left for selected dates.</div>`;
+
+  if(available > 0){
+    document.getElementById('bookingFormWrap').style.display='block';
+    if(currentUser){ document.getElementById('bfName').value = currentUser.name || currentUser.username; }
+  } else {
+    document.getElementById('bookingFormWrap').style.display='none';
+  }
+}
+
+function cancelBookingForm(){ document.getElementById('bookingFormWrap').style.display='none'; provisional=null; }
+
+function submitBooking(){
+  const name = (document.getElementById('bfName').value || '').trim();
+  const contact = (document.getElementById('bfContact').value || '').trim();
+  const email = (document.getElementById('bfEmail').value || '').trim();
+  if(!name || !contact){ alert('Please provide contact info'); return; }
+
+  provisional = {
+    user: currentUser ? currentUser.username : 'guest',
+    fullname: name, contact, email,
+    roomId: document.getElementById('selectRoomType').value,
+    checkIn: document.getElementById('bookCheckIn').value,
+    checkOut: document.getElementById('bookCheckOut').value,
+    guests: Number(document.getElementById('bookGuests').value),
+    extras: document.getElementById('bookExtras').value,
+    createdAt: new Date().toISOString()
+  };
+
+  document.getElementById('paymentWrap').style.display='block';
+  window.scrollTo(0, document.body.scrollHeight);
+}
+
+function completePayment(){
+  const p = provisional;
+  if(!p){ alert('No booking in progress'); return; }
+  const room = rooms.find(r=>r.id===p.roomId);
+  const nights = Math.round((new Date(p.checkOut) - new Date(p.checkIn)) / (1000*60*60*24));
+  const base = room.price * nights;
+  let extraCost = 0;
+  if(p.extras==='breakfast') extraCost = 200 * nights;
+  if(p.extras==='spa') extraCost = 1200;
+  const total = base + extraCost;
+  const bookingId = 'BK'+Math.floor(Math.random()*900000+100000);
+  const booking = { id:bookingId, ...p, roomName:room.name, pricePerNight:room.price, nights, total, status:'confirmed' };
+
+  bookings.push(booking);
+  persistBookings();
+
+  document.getElementById('bookingSummary').innerText = `Booking ID: ${bookingId}\n${room.name} • ${p.checkIn} → ${p.checkOut} • ${p.guests} guest(s)\nTotal: ₱${total}`;
+  document.getElementById('bookingSuccess').style.display='block';
+  document.getElementById('paymentWrap').style.display='none';
+  document.getElementById('bookingFormWrap').style.display='none';
+  updateCounts();
+  provisional = null;
+}
+
+// --- Bookings rendering & management ---
+function renderBookings(type='upcoming'){
+  const user = currentUser ? currentUser.username : 'guest';
+  const now = new Date();
+  let list = bookings.filter(b=>b.user===user);
+  if(type==='upcoming') list = list.filter(b=> new Date(b.checkOut) >= now );
+  else list = list.filter(b=> new Date(b.checkOut) < now );
+
+  const wrap = document.getElementById('bookingsTable');
+  if(list.length===0){ wrap.innerHTML = '<div class="card small muted" style="padding:12px">No bookings found</div>'; return; }
+
+  let html = `<table><thead><tr><th>ID</th><th>Room</th><th>Dates</th><th class=\"text-right\">Total</th><th></th></tr></thead><tbody>`;
+  list.forEach(b=>{
+    html += `<tr><td>${b.id}</td><td>${b.roomName}</td><td>${b.checkIn} → ${b.checkOut}</td><td class=\"text-right\">₱${b.total}</td><td><button data-invoice="${b.id}">Invoice</button></td></tr>`;
+  });
+  html += '</tbody></table>';
+  wrap.innerHTML = html;
+
+  wrap.querySelectorAll('[data-invoice]').forEach(btn=> btn.addEventListener('click', e=> downloadInvoice(e.currentTarget.dataset.invoice)));
+}
+
+function renderAllBookings(){
+  const wrap = document.getElementById('reportsArea');
+  if(bookings.length===0){ wrap.innerHTML='<div class="small muted card" style="padding:12px">No bookings</div>'; return; }
+  let html = `<table><thead><tr><th>ID</th><th>User</th><th>Room</th><th>Dates</th><th class=\"text-right\">Total</th><th>Status</th></tr></thead><tbody>`;
+  bookings.forEach(b=> html+=`<tr><td>${b.id}</td><td>${b.user}</td><td>${b.roomName}</td><td>${b.checkIn}→${b.checkOut}</td><td class=\"text-right\">₱${b.total}</td><td>${b.status}</td></tr>`);
+  html += '</tbody></table>';
+  wrap.innerHTML = html;
+}
+
+function markPaid(id){
+  const b = bookings.find(x=>x.id===id);
+  if(b){ b.status='paid'; persistBookings(); renderPayments(); updateCounts(); alert('Marked paid'); }
+}
+
+// --- Admin area helpers ---
+function renderRoomsAdmin(){
+  const wrap = document.getElementById('adminArea');
+  let html = '<h4>Rooms & Services (Admin)</h4><table><thead><tr><th>Room</th><th>Price</th><th>Qty</th></tr></thead><tbody>';
+  rooms.forEach(r=> html += `<tr><td>${r.name}</td><td>₱${r.price}</td><td>${r.qty}</td></tr>`);
+  html += '</tbody></table>';
+  wrap.innerHTML = html;
+}
+
+function renderPayments(){
+  const wrap = document.getElementById('adminArea');
+  const unpaid = bookings.filter(b=>b.status!=='paid');
+  let html = '<h4>Payments</h4>';
+  if(unpaid.length===0) html += '<div class="small muted card" style="padding:12px">No pending payments</div>';
+  else {
+    html += '<table><thead><tr><th>ID</th><th>User</th><th>Total</th><th></th></tr></thead><tbody>';
+    unpaid.forEach(b=> html += `<tr><td>${b.id}</td><td>${b.user}</td><td>₱${b.total}</td><td><button data-markpaid="${b.id}">Mark Paid</button></td></tr>`);
+    html += '</tbody></table>';
+  }
+  wrap.innerHTML = html;
+  wrap.querySelectorAll('[data-markpaid]').forEach(btn=> btn.addEventListener('click', e=> markPaid(e.currentTarget.dataset.markpaid)));
+}
+
+function renderUsers(){
+  const wrap = document.getElementById('adminArea');
+  let html = '<h4>Users</h4><table><thead><tr><th>Username</th><th>Role</th><th>Name</th></tr></thead><tbody>';
+  users.forEach(u=> html += `<tr><td>${u.username}</td><td>${u.role}</td><td>${u.name||''}</td></tr>`);
+  html += '</tbody></table>';
+  wrap.innerHTML = html;
+}
+
+// --- Reports generation ---
+function generateDailyReport(){
+  const today = new Date().toISOString().slice(0,10);
+  const todays = bookings.filter(b=>b.createdAt && b.createdAt.startsWith(today));
+  const wrap = document.getElementById('reportsArea');
+  wrap.innerHTML = `<div class="card" style="padding:12px">Daily Report (${today}): ${todays.length} bookings</div>`;
+}
+function generateMonthlyReport(){
+  const month = new Date().toISOString().slice(0,7);
+  const mlist = bookings.filter(b=>b.createdAt && b.createdAt.startsWith(month));
+  const wrap = document.getElementById('reportsArea');
+  wrap.innerHTML = `<div class="card" style="padding:12px">Monthly Report (${month}): ${mlist.length} bookings</div>`;
+}
+
+// --- Utilities ---
+function updateCounts(){
+  document.getElementById('countBookings').innerText = bookings.filter(b=>b.user=== (currentUser?currentUser.username:'guest')).length;
+  const pending = bookings.filter(b=>b.status!=='paid').length;
+  document.getElementById('pendingPayments').innerText = pending;
+  document.getElementById('notifList').innerText = 'You have ' + pending + ' pending payment(s).';
+}
+
+// invoice download (simple text)
+function downloadInvoice(id){
+  const b = id ? bookings.find(x=>x.id===id) : bookings[bookings.length-1];
+  if(!b){ alert('No booking'); return; }
+  const content = `NORACAFRA HOTEL\nInvoice for Booking ${b.id}\n\nGuest: ${b.fullname}\nRoom: ${b.roomName}\nDates: ${b.checkIn} → ${b.checkOut}\nNights: ${b.nights}\nTotal: ₱${b.total}\n\nThank you for booking with NORACAFRA HOTEL.`;
+  const blob = new Blob([content], {type: 'text/plain'});
+  const url = URL.createObjectURL(blob);
+  const a = document.getElementById('downloadAnchor');
+  a.href = url; a.download = `invoice_${b.id}.txt`; a.click(); URL.revokeObjectURL(url);
+}
+
+function goToBookings(){ showSection('mybookings'); renderBookings('upcoming'); }
+
+function cancelBooking(id){
+  if(!confirm('Cancel booking?')) return;
+  bookings = bookings.filter(b=>b.id!==id);
+  persistBookings();
+  renderBookings('upcoming');
+  updateCounts();
+}
+
+function logout(){ if(confirm('Sign out?')) location.reload(); }
+
+// show admin panel if already logged (on pageload, rarely used here)
+(function showAdminIfNeeded(){ if(currentUser && currentUser.role==='admin') document.getElementById('adminPanel').style.display='block'; })();
+
+</script>
+</body>
+</html>
