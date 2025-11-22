@@ -1,1 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NAROCAFRA HOTEL - Staff Panel</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      display: flex;
+      height: 100vh;
+      color: #333;
+    }
+    nav {
+      width: 250px;
+      background: #ffffff;
+      padding: 1.5rem;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+      border-radius: 0 10px 10px 0;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    nav ul li {
+      margin-bottom: 1rem;
+    }
+    nav button {
+      width: 100%;
+      background: transparent;
+      border: none;
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+    nav button i {
+      margin-right: 0.5rem;
+      width: 20px;
+    }
+    nav button.active, nav button:hover {
+      background: #0b84c9;
+      color: white;
+      box-shadow: 0 4px 8px rgba(11, 132, 201, 0.3);
+    }
+    main {
+      flex-grow: 1;
+      padding: 2rem;
+      box-sizing: border-box;
+      overflow: auto;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #e0e0e0;
+    }
+    header h1 {
+      margin: 0;
+      color: #0b84c9;
+      font-weight: 600;
+    }
+    button.logout {
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.3s ease;
+    }
+    button.logout:hover {
+      background: #dc2626;
+    }
+    section { display: none; }
+    section.active { display: block; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 0.75rem;
+      border: 1px solid #e0e0e0;
+      text-align: left;
+    }
+    th {
+      background: #f8f9fa;
+      font-weight: 600;
+      color: #0b84c9;
+    }
+    .section-title {
+      color: #0b84c9;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+    form label {
+      display: block;
+      margin: 0.5rem 0 0.2rem;
+      color: #555;
+      font-weight: 500;
+    }
+    form input, form select, form textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      margin-bottom: 1rem;
+    }
+    form button {
+      margin-top: 1rem;
+      background: #0b84c9;
+      color: white;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+    form button:hover {
+      background: #0a6fb8;
+    }
+    .report-section {
+      margin-bottom: 2rem;
+    }
+    .report-section h3 {
+      color: #0b84c9;
+      margin-bottom: 0.5rem;
+    }
+    .stats {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .stat-card {
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      flex: 1;
+      text-align: center;
+    }
+    .stat-card h4 {
+      margin: 0;
+      color: #0b84c9;
+    }
+    .stat-card p {
+      margin: 0.5rem 0 0;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><button class="nav-btn active" data-section="reservations-section"><i class="fas fa-calendar-check"></i> Manage Reservations</button></li>
+      <li><button class="nav-btn" data-section="checkins-section"><i class="fas fa-user-check"></i> Guest Check-ins</button></li>
+      <li><button class="nav-btn" data-section="reports-section"><i class="fas fa-chart-bar"></i> Reports</button></li>
+      <li><button class="logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button></li>
+    </ul>
+  </nav>
+  <main>
+    <header>
+      <h1>Staff Dashboard</h1>
+    </header>
+    <section id="reservations-section" class="active">
+      <h2 class="section-title">Manage Reservations</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Booking ID</th>
+            <th>Guest Name</th>
+            <th>Room/Service</th>
+            <th>Check-in Date</th>
+            <th>Check-out Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>R001</td>
+            <td>John Doe</td>
+            <td>Deluxe Room (101)</td>
+            <td>2023-12-01</td>
+            <td>2023-12-05</td>
+            <td>Confirmed</td>
+            <td><button onclick="alert('Check-in processed for John Doe!')">Check-in</button></td>
+          </tr>
+          <tr>
+            <td>S002</td>
+            <td>Mary Jane</td>
+            <td>Spa Package</td>
+            <td>2023-12-07</td>
+            <td>2023-12-07</td>
+            <td>Pending</td>
+            <td><button onclick="alert('Checked-in for Spa Package!')">Check-in</button></td>
+          </tr>
+          <tr>
+            <td>R003</td>
+            <td>Alex Smith</td>
+            <td>Standard Room (205)</td>
+            <td>2023-12-10</td>
+            <td>2023-12-12</td>
+            <td>Confirmed</td>
+            <td><button onclick="alert('Check-in processed for Alex Smith!')">Check-in</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section id="checkins-section">
+      <h2 class="section-title">Guest Check-ins</h2>
+      <p>Use this section to verify and confirm guest check-ins at the front desk. Scan ID or enter details below.</p>
+      <form>
+        <label for="guest-id">Guest ID or Booking ID:</label>
+        <input type="text" id="guest-id" placeholder="Enter ID">
+        <label for="checkin-date">Check-in Date:</label>
+        <input type="date" id="checkin-date">
+        <button type="submit">Confirm Check-in</button>
+      </form>
+    </section>
+    <section id="reports-section">
+      <h2 class="section-title">Reports</h2>
+      <div class="report-section">
+        <h3>Daily Report (December 1, 2023)</h3>
+        <div class="stats">
+          <div class="stat-card">
+            <h4>Total Bookings</h4>
+            <p>15</p>
+          </div>
+          <div class="stat-card">
+            <h4>Occupancy Rate</h4>
+            <p>85%</p>
+          </div>
+          <div class="stat-card">
+            <h4>Revenue</h4>
+            <p>$12,450</p>
+          </div>
+          <div class="stat-card">
+            <h4>Check-ins</h4>
+            <p>12</p>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Room Type</th>
+              <th>Occupied</th>
+              <th>Available</th>
+              <th>Revenue Generated</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Deluxe Room</td>
+              <td>8</td>
+              <td>2</td>
+              <td>$8,000</td>
+            </tr>
+            <tr>
+              <td>Standard Room</td>
+              <td>5</td>
+              <td>5</td>
+              <td>$3,200</td>
+            </tr>
+            <tr>
+              <td>Suite</td>
+              <td>2</td>
+              <td>3</td>
+              <td>$1,250</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="report-section">
+        <h3>Monthly Report (November 2023)</h3>
+        <div class="stats">
+          <div class="stat-card">
+            <h4>Total Bookings</h4>
+            <p>450</p>
+          </div>
+          <div class="stat-card">
+            <h4>Average Occupancy</h4>
+            <p>78%</p>
+          </div>
+          <div class="stat-card">
+            <h4>Total Revenue</h4>
+            <p>$375,000</p>
+          </div>
+          <div class="stat-card">
+            <h4>Guest Satisfaction</h4>
+            <p>4.5/5</p>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Service</th>
+              <th>Usage Count</th>
+              <th>Revenue</th>
+              <th>Feedback Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Room Bookings</td>
+              <td>380</td>
+              <td>$320,000</td>
+              <td>4.6</td>
+            </tr>
+            <tr>
+              <td>Spa Packages</td>
+              <td>50</td>
+              <td>$40,000</td>
+              <td>4.8</td>
+            </tr>
+            <tr>
+              <td>Dining Services</td>
+              <td>120</td>
+              <td>$15,000</td>
+              <td>4.3</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <button onclick="generateReport('daily')">Generate New Daily Report</button>
+      <button onclick="generateReport('monthly')">Generate New Monthly Report</button>
+    </section>
+  </main>
+  <script>
+    const navButtons = document.querySelectorAll('nav button.nav-btn');
+    const sections = document.querySelectorAll('main section');
+    navButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        navButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        sections.forEach(sec => sec.classList.remove('active'));
+        const target = document.getElementById(btn.getAttribute('data-section'));
+        if(target) target.classList.add('active');
+      });
+    });
+    function logout() {
+      window.location.href = 'login.html';
+    }
+    function generateReport(type) {
+      alert(`Generating new ${type} report... (This would connect to a backend in a real system)`);
+    }
+  </script>
+</body>
+</html>
 
