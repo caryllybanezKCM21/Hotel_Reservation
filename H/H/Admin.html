@@ -1,246 +1,541 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>NAROCAFRA HOTEL - Admin Panel</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f3f6fb;
-      display: flex;
-      height: 100vh;
+    :root{
+      --blue:#0b84c9;
+      --muted:#f3f6fb;
+      --card-bg:#ffffff;
+      --success:#28a745;
+      --danger:#dc3545;
+      --accent:#0b84c9;
+      --text:#263238;
     }
+
+    *{box-sizing:border-box}
+    body {
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      margin: 0;
+      background: var(--muted);
+      display: flex;
+      min-height: 100vh;
+      color: var(--text);
+    }
+
+    /* SIDEBAR */
     nav {
       width: 240px;
-      background: white;
-      padding: 1rem;
-      box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+      background: var(--card-bg);
+      padding: 1.25rem;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.06);
       box-sizing: border-box;
-    }
-    nav ul {
-      list-style: none;
-      padding: 0;
-    }
-    nav ul li {
-      margin-bottom: 1rem;
-    }
-    nav button {
-      width: 100%;
-      background: transparent;
-      border: none;
-      font-size: 1rem;
-      cursor: pointer;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      text-align: left;
-    }
-    nav button.active, nav button:hover {
-      background: #0b84c9;
-      color: white;
-    }
-    main {
-      flex-grow: 1;
-      padding: 2rem;
-      box-sizing: border-box;
-      overflow: auto;
-    }
-    header {
+      position: relative;
+      z-index: 999;
       display: flex;
-      justify-content: space-between;
-      margin-bottom: 2rem;
-      align-items: center;
+      flex-direction: column;
+      gap: 0.5rem;
     }
-    header h1 {
-      margin: 0;
-      color: #0b84c9;
+    .brand {
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 1.05rem;
+      margin-bottom: 0.75rem;
     }
-    button.logout {
-      background: #ef4444;
+    nav ul{list-style:none;padding:0;margin:0;display:block}
+    nav li{margin:0 0 0.75rem 0}
+    .nav-btn {
+      width:100%;
+      display:flex;
+      align-items:center;
+      text-align:left;
+      padding:0.55rem 0.9rem;
+      border-radius:8px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size:0.98rem;
+      color: #1f2d35;
+      transition: all .18s ease;
+    }
+    .nav-btn i {
+      margin-right: 0.5rem;
+      width: 20px;
+    }
+    .nav-btn:hover{background:rgba(11,132,201,0.12); color:var(--accent)}
+    .nav-btn.active{background:var(--accent); color:#fff}
+
+    .logout {
+      margin-top: auto;
+      background: var(--danger);
       color: white;
       border: none;
-      padding: 0.5rem 1rem;
+      padding: 0.6rem 0.8rem;
       border-radius: 8px;
       cursor: pointer;
+      width:100%;
     }
-    section { display: none; }
-    section.active { display: block; }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
+    .logout:hover{opacity:0.95}
+
+    /* MAIN */
+    main{
+      flex:1;
+      padding: 26px 32px;
+      overflow:auto;
     }
-    th, td {
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      text-align: left;
+
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:1rem;
+      margin-bottom:18px;
     }
-    .section-title {
-      color: #0b84c9;
-      margin-bottom: 1rem;
+    header h1{
+      margin:0;
+      color: var(--accent);
+      font-size: 1.75rem;
+      font-weight:700;
     }
-    form label {
-      display: block;
-      margin: 0.5rem 0 0.2rem;
-      color: #555;
+    .header-right{display:flex;gap:12px;align-items:center}
+
+    /* STAT CARDS */
+    .stats{
+      display:flex;
+      gap:12px;
+      margin-bottom:18px;
+      flex-wrap:wrap;
     }
-    form input, form select, form textarea {
-      width: 100%;
-      padding: 0.5rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
+    .stat-card{
+      background:var(--card-bg);
+      padding:12px 16px;
+      border-radius:10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      min-width:150px;
     }
-    form button {
-      margin-top: 1rem;
-      background: #0b84c9;
-      color: white;
-      border: none;
-      padding: 0.7rem 1.2rem;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
+    .stat-title{font-size:0.85rem;color:#6b7a83;margin-bottom:6px}
+    .stat-value{font-size:1.25rem;font-weight:700;color:#1f2d35}
+
+    /* SECTION */
+    .section-title{
+      color:var(--accent);
+      margin:0 0 8px 0;
+      font-size:1.3rem;
     }
-    .report-container {
-      margin-top: 2rem;
-      display: none;
+    p.lead{margin:0 0 12px 0;color:#48545a}
+
+    /* TABLE */
+    .table-container{
+      background: transparent;
     }
-    .report-container.active {
-      display: block;
+    table{
+      width:100%;
+      border-collapse:collapse;
+      background:var(--card-bg);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      border-radius:6px;
+      overflow:hidden;
     }
-    .report-summary {
-      background: white;
-      padding: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      margin-bottom: 1rem;
+    thead tr{background:#fbfcfd}
+    th, td{
+      padding:14px 18px;
+      border-bottom:1px solid #eef1f3;
+      text-align:left;
+      font-size:0.95rem;
     }
-    .report-summary h3 {
-      margin-top: 0;
-      color: #0b84c9;
+    th{
+      color:#122127;
+      font-weight:700;
+      font-size:0.98rem;
+      border-bottom:2px solid #e9edf0;
     }
+    tbody tr:hover{background:#fafcfe}
+
+    /* ACTION BUTTONS (green/red) */
+    .update-btn{
+      background:var(--success);
+      color:white;
+      border:none;
+      padding:8px 12px;
+      border-radius:6px;
+      cursor:pointer;
+      margin-right:8px;
+      font-weight:600;
+    }
+    .update-btn:hover{filter:brightness(.95)}
+    .cancel-btn{
+      background:var(--danger);
+      color:white;
+      border:none;
+      padding:8px 12px;
+      border-radius:6px;
+      cursor:pointer;
+      font-weight:600;
+    }
+    .cancel-btn:hover{filter:brightness(.95)}
+
+    /* small responsive */
+    @media (max-width:900px){
+      nav{display:none}
+      main{padding:18px}
+      .stats{flex-direction:column}
+    }
+
+    /* status badge */
+    .badge{
+      padding:6px 10px;
+      border-radius:16px;
+      font-size:0.85rem;
+      font-weight:600;
+      display:inline-block;
+    }
+    .badge.confirmed{background:rgba(11,132,201,0.12); color:var(--accent)}
+    .badge.pending{background:rgba(255,193,7,0.12); color:#f59e0b}
+    .badge.checked{background:rgba(34,197,94,0.12); color:var(--success)}
+    .badge.cancelled{background:rgba(220,53,69,0.08); color:var(--danger)}
+
+    /* small modal for status change */
+    .modal-backdrop{
+      position:fixed; inset:0; background:rgba(0,0,0,0.35); display:none; align-items:center; justify-content:center; z-index:2000;
+    }
+    .modal{
+      background:white; padding:18px; border-radius:10px; min-width:300px; box-shadow:0 6px 20px rgba(0,0,0,0.2);
+    }
+    .modal h3{margin:0 0 8px 0}
+    .modal .row{display:flex; gap:8px; margin-top:10px}
+    .modal button{padding:8px 10px; border-radius:8px; border:none; cursor:pointer}
+    .btn-secondary{background:#eef2f6}
+    .btn-primary{background:var(--accent); color:#fff}
   </style>
 </head>
 <body>
   <nav>
+    <div class="brand">NAROCAFRA HOTEL — Admin</div>
     <ul>
-      <li><button class="nav-btn active" data-section="manage-reservations">Manage Reservations</button></li>
-      <li><button class="nav-btn" data-section="manage-rooms-services">Manage Rooms/Services</button></li>
-      <li><button class="nav-btn" data-section="payments-billing">Payment/Billing Records</button></li>
-      <li><button class="nav-btn" data-section="generate-reports">Generate Reports</button></li>
-      <li><button class="nav-btn" data-section="user-management">User Management</button></li>
-      <li><button class="logout" onclick="logout()">Logout</button></li>
+      <li><button class="nav-btn active" data-section="manage-reservations"><i class="fas fa-calendar-check"></i> Manage Reservations</button></li>
+      <li><button class="nav-btn" data-section="manage-rooms-services"><i class="fas fa-bed"></i> Manage Rooms/Services</button></li>
+      <li><button class="nav-btn" data-section="payments-billing"><i class="fas fa-credit-card"></i> Payment/Billing Records</button></li>
+      <li><button class="nav-btn" data-section="generate-reports"><i class="fas fa-chart-bar"></i> Generate Reports</button></li>
+      <li><button class="nav-btn" data-section="user-management"><i class="fas fa-users"></i> User Management</button></li>
     </ul>
+
+    <button class="logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
   </nav>
+
   <main>
     <header>
-      <h1>Admin Panel</h1>
+      <div>
+        <h1>Admin Panel - Narocafra Hotel</h1>
+        <div style="height:6px"></div>
+        <div style="color:#6c7a82; font-size:0.95rem">Manage reservations, payments, users and reports</div>
+      </div>
+
+      <div class="header-right">
+        <!-- could place profile/avatar here -->
+      </div>
     </header>
+
+    <!-- live stats -->
+    <div class="stats" aria-hidden="false">
+      <div class="stat-card">
+        <div class="stat-title">Total Reservations</div>
+        <div id="count-total" class="stat-value">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Confirmed</div>
+        <div id="count-confirmed" class="stat-value">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Pending</div>
+        <div id="count-pending" class="stat-value">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Checked In</div>
+        <div id="count-checkedin" class="stat-value">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Cancelled</div>
+        <div id="count-cancelled" class="stat-value">0</div>
+      </div>
+    </div>
+
+    <!-- SECTIONS -->
     <section id="manage-reservations" class="active">
       <h2 class="section-title">Manage Reservations</h2>
-      <table>
-        <thead>
-          <tr><th>Booking ID</th><th>User</th><th>Room/Service</th><th>Dates</th><th>Status</th><th>Actions</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>R001</td><td>John Doe</td><td>Deluxe Room</td><td>2023-12-01 to 2023-12-05</td><td>Confirmed</td><td><button onclick="alert('Updated!')">Update</button></td></tr>
-          <tr><td>S002</td><td>Mary Jane</td><td>Spa Package</td><td>2023-12-07</td><td>Pending</td><td><button onclick="alert('Updated!')">Update</button></td></tr>
-        </tbody>
-      </table>
+      <p class="lead">View and update reservation statuses for rooms and services.</p>
+
+      <div class="table-container">
+        <table id="reservation-table">
+          <thead>
+            <tr>
+              <th>Booking ID</th>
+              <th>User</th>
+              <th>Room/Service</th>
+              <th>Dates</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr data-id="R001">
+              <td>R001</td>
+              <td>John Doe</td>
+              <td>Deluxe Room</td>
+              <td>2023-12-01 to 2023-12-05</td>
+              <td class="status-cell"><span class="badge confirmed">Confirmed</span></td>
+              <td>
+                <button class="update-btn" data-id="R001">Update Status</button>
+                <button class="cancel-btn" data-id="R001">Cancel</button>
+              </td>
+            </tr>
+
+            <tr data-id="R002">
+              <td>R002</td>
+              <td>Jane Smith</td>
+              <td>Executive Suite</td>
+              <td>2023-12-03 to 2023-12-07</td>
+              <td class="status-cell"><span class="badge pending">Pending</span></td>
+              <td>
+                <button class="update-btn" data-id="R002">Update Status</button>
+                <button class="cancel-btn" data-id="R002">Cancel</button>
+              </td>
+            </tr>
+
+            <tr data-id="S003">
+              <td>S003</td>
+              <td>Mary Johnson</td>
+              <td>Spa Package</td>
+              <td>2023-12-07</td>
+              <td class="status-cell"><span class="badge confirmed">Confirmed</span></td>
+              <td>
+                <button class="update-btn" data-id="S003">Update Status</button>
+                <button class="cancel-btn" data-id="S003">Cancel</button>
+              </td>
+            </tr>
+
+            <tr data-id="R004">
+              <td>R004</td>
+              <td>Robert Brown</td>
+              <td>Standard Room</td>
+              <td>2023-12-10 to 2023-12-12</td>
+              <td class="status-cell"><span class="badge checked">Checked In</span></td>
+              <td>
+                <button class="update-btn" data-id="R004">Update Status</button>
+                <button class="cancel-btn" data-id="R004">Cancel</button>
+              </td>
+            </tr>
+
+            <tr data-id="S005">
+              <td>S005</td>
+              <td>Emily Davis</td>
+              <td>Fine Dining Reservation</td>
+              <td>2023-12-15</td>
+              <td class="status-cell"><span class="badge pending">Pending</span></td>
+              <td>
+                <button class="update-btn" data-id="S005">Update Status</button>
+                <button class="cancel-btn" data-id="S005">Cancel</button>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
     </section>
-    <section id="manage-rooms-services">
+
+    <!-- Other sections (skeletons) -->
+    <section id="manage-rooms-services" style="display:none">
       <h2 class="section-title">Manage Rooms/Services</h2>
-      <p>Add, update, or remove room types and service offerings here.</p>
-      <form>
-        <label for="roomType">Room/Service Name</label>
-        <input type="text" id="roomType" placeholder="Enter name" />
-        <label for="description">Description</label>
-        <textarea id="description" rows="3" placeholder="Enter description"></textarea>
-        <button type="button" onclick="alert('Saved!')">Save</button>
-      </form>
+      <p class="lead">Add, update, or remove room types and service offerings.</p>
+      <!-- you can expand this section -->
     </section>
-    <section id="payments-billing">
+
+    <section id="payments-billing" style="display:none">
       <h2 class="section-title">Payment/Billing Records</h2>
-      <p>View and process payment records here (simulated view).</p>
-      <table>
-        <thead>
-          <tr><th>Payment ID</th><th>User</th><th>Amount</th><th>Date</th><th>Status</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>P101</td><td>Hershey</td><td>200</td><td>2023-11-20</td><td>Paid</td></tr>
-          <tr><td>P102</td><td>Mary Jane</td><td>100</td><td>2023-11-22</td><td>Pending</td></tr>
-        </tbody>
-      </table>
+      <p class="lead">View and process payment records.</p>
     </section>
-    <section id="generate-reports">
+
+    <section id="generate-reports" style="display:none">
       <h2 class="section-title">Generate Reports</h2>
-      <p>Select the type of report and date range to generate a detailed summary.</p>
-      <form id="report-form">
-        <label for="report-type">Report Type</label>
-        <select id="report-type">
-          <option value="daily">Daily Report</option>
-          <option value="monthly">Monthly Report</option>
-        </select>
-        <label for="start-date">Start Date</label>
-        <input type="date" id="start-date" required />
-        <label for="end-date">End Date (for Monthly, select a month range)</label>
-        <input type="date" id="end-date" required />
-        <button type="button" onclick="generateReport()">Generate Report</button>
-      </form>
-      <div id="daily-report" class="report-container">
-        <div class="report-summary">
-          <h3>Daily Report Summary (Sample Data)</h3>
-          <p><strong>Date:</strong> 2023-12-01</p>
-          <p><strong>Total Rooms Available:</strong> 50</p>
-          <p><strong>Rooms Occupied:</strong> 45 (90% Occupancy Rate)</p>
-          <p><strong>Check-ins:</strong> 10</p>
-          <p><strong>Check-outs:</strong> 8</p>
-          <p><strong>Cancellations:</strong> 2</p>
-          <p><strong>Total Revenue from Rooms:</strong> ₱4,500</p>
-          <p><strong>Total Revenue from Services:</strong> ₱800</p>
-          <p><strong>Net Revenue:</strong> ₱5,300</p>
-        </div>
-        <table>
-          <thead>
-            <tr><th>Booking ID</th><th>User</th><th>Room/Service</th><th>Check-in/Check-out</th><th>Revenue</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>R001</td><td>John Doe</td><td>Deluxe Room</td><td>Check-in</td><td>₱150</td></tr>
-            <tr><td>R003</td><td>Alice Smith</td><td>Standard Room</td><td>Check-out</td><td>₱120</td></tr>
-            <tr><td>S004</td><td>Bob Johnson</td><td>Spa Package</td><td>Service Used</td><td>₱100</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div id="monthly-report" class="report-container">
-        <div class="report-summary">
-          <h3>Monthly Report Summary (Sample Data)</h3>
-          <p><strong>Month:</strong> December 2023</p>
-          <p><strong>Average Occupancy Rate:</strong> 85%</p>
-          <p><strong>Total Check-ins:</strong> 150</p>
-          <p><strong>Total Check-outs:</strong> 145</p>
-          <p><strong>Total Cancellations:</strong> 10</p>
-          <p><strong>Average Length of Stay:</strong> 3.2 nights</p>
-          <p><strong>Total Revenue from Rooms:</strong> ₱45,000</p>
-          <p><strong>Total Revenue from Services:</strong> ₱8,500</p>
-          <p><strong>Net Revenue:</strong> ₱53,500</p>
-          <p><strong>Top Performing Room Type:</strong> Deluxe Room (Revenue: ₱20,000)</p>
-        </div>
-        <table>
-          <thead>
-            <tr><th>Day</th><th>Occupancy Rate</th><th>Check-ins</th><th>Check-outs</th><th>Revenue</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>2023-12-01</td><td>90%</td><td>10</td><td>8</td><td>₱1,200</td></tr>
-            <tr><td>2023-12-02</td><td>88%</td><td>9</td><td>10</td><td>₱1,150</td></tr>
-            <tr><td>2023-12-03</td><td>92%</td><td>11</td><td>9</td><td>₱1,300</td></tr>
-          </tbody>
-        </table>
-      </div>
+      <p class="lead">Generate daily or monthly reports.</p>
     </section>
-    <section id="user-management">
+
+    <section id="user-management" style="display:none">
       <h2 class="section-title">User Management</h2>
-      <p>Manage registered users here.</p>
-      <table>
-        <thead>
-          <tr><th>User ID</th><th>Name</th
+      <p class="lead">Manage registered users and staff.</p>
+    </section>
+
+  </main>
+
+  <!-- Modal: status picker -->
+  <div id="modal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <h3 id="modal-title">Update Reservation Status</h3>
+      <div style="margin-top:8px">Choose new status for <strong id="modal-res-id"></strong>:</div>
+
+      <div style="margin-top:12px">
+        <select id="status-select" style="width:100%; padding:8px; border-radius:8px; border:1px solid #d6dde3;">
+          <option value="Confirmed">Confirmed</option>
+          <option value="Pending">Pending</option>
+          <option value="Checked In">Checked In</option>
+          <option value="Checked Out">Checked Out</option>
+          <option value="Cancelled">Cancelled</option>
+        </select>
+      </div>
+
+      <div class="row" style="justify-content:flex-end;margin-top:14px">
+        <button class="btn-secondary" id="modal-cancel">Cancel</button>
+        <button class="btn-primary" id="modal-save">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // NAVIGATION
+    const navButtons = document.querySelectorAll(".nav-btn");
+    const sections = document.querySelectorAll("main section");
+    navButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        navButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const target = btn.dataset.section;
+        sections.forEach(s => {
+          if (s.id === target) {
+            s.style.display = "block";
+          } else {
+            s.style.display = "none";
+          }
+        });
+      });
+    });
+
+    function logout(){
+      // realistic simple logout action
+      if(confirm("Are you sure you want to log out?")){
+        alert("Logged out (demo).");
+        // window.location.href = "login.html";
+      }
+    }
+
+    // STATUS BADGE helper
+    function makeBadge(status){
+      const span = document.createElement('span');
+      span.classList.add('badge');
+      const key = status.toLowerCase().replace(/\s+/g,'');
+      if(status.toLowerCase().includes('confirm')) span.classList.add('confirmed');
+      else if(status.toLowerCase().includes('pending')) span.classList.add('pending');
+      else if(status.toLowerCase().includes('checked')) span.classList.add('checked');
+      else if(status.toLowerCase().includes('cancel')) span.classList.add('cancelled');
+      span.textContent = status;
+      return span;
+    }
+
+    // update counts based on table
+    function updateCounts(){
+      const rows = document.querySelectorAll('#reservation-table tbody tr');
+      let total = 0, confirmed = 0, pending = 0, checkedin = 0, cancelled = 0;
+      rows.forEach(r=>{
+        total++;
+        const txt = r.querySelector('.status-cell').innerText.trim().toLowerCase();
+        if(txt.includes('confirm')) confirmed++;
+        else if(txt.includes('pending')) pending++;
+        else if(txt.includes('checked in')) checkedin++;
+        else if(txt.includes('cancel')) cancelled++;
+      });
+      document.getElementById('count-total').textContent = total;
+      document.getElementById('count-confirmed').textContent = confirmed;
+      document.getElementById('count-pending').textContent = pending;
+      document.getElementById('count-checkedin').textContent = checkedin;
+      document.getElementById('count-cancelled').textContent = cancelled;
+    }
+
+    // initialize counts
+    updateCounts();
+
+    // handlers for Update Status and Cancel
+    const modal = document.getElementById('modal');
+    const modalResId = document.getElementById('modal-res-id');
+    const statusSelect = document.getElementById('status-select');
+    const modalSave = document.getElementById('modal-save');
+    const modalCancel = document.getElementById('modal-cancel');
+
+    let activeRow = null;
+
+    // Attach update handler to each "Update Status" button
+    document.querySelectorAll('.update-btn').forEach(btn=>{
+      btn.addEventListener('click', (e)=>{
+        const id = btn.dataset.id;
+        activeRow = document.querySelector(`#reservation-table tbody tr[data-id="${id}"]`);
+        if(!activeRow) return;
+        modalResId.textContent = id;
+        // set select to current status if available
+        const currentText = activeRow.querySelector('.status-cell').innerText.trim();
+        for (let i=0;i<statusSelect.options.length;i++){
+          if(statusSelect.options[i].value.toLowerCase() === currentText.toLowerCase()) {
+            statusSelect.selectedIndex = i; break;
+          } else {
+            statusSelect.selectedIndex = 0;
+          }
+        }
+        modal.style.display = 'flex';
+        modal.removeAttribute('aria-hidden');
+      });
+    });
+
+    // Cancel button handler (mark cancelled after confirmation)
+    document.querySelectorAll('.cancel-btn').forEach(btn=>{
+      btn.addEventListener('click', (e)=>{
+        const id = btn.dataset.id;
+        const row = document.querySelector(`#reservation-table tbody tr[data-id="${id}"]`);
+        if(!row) return;
+        if(confirm(`Cancel reservation ${id}? This action can be reversed by updating status.`)){
+          const cell = row.querySelector('.status-cell');
+          cell.innerHTML = '';
+          cell.appendChild(makeBadge('Cancelled'));
+          updateCounts();
+        }
+      });
+    });
+
+    // Modal cancel
+    modalCancel.addEventListener('click', ()=>{
+      modal.style.display = 'none';
+      modal.setAttribute('aria-hidden','true');
+      activeRow = null;
+    });
+
+    // Modal save: update row status
+    modalSave.addEventListener('click', ()=>{
+      if(!activeRow) return;
+      const newStatus = statusSelect.value;
+      const cell = activeRow.querySelector('.status-cell');
+      cell.innerHTML = '';
+      cell.appendChild(makeBadge(newStatus));
+      modal.style.display = 'none';
+      modal.setAttribute('aria-hidden','true');
+      updateCounts();
+      activeRow = null;
+      // optional: show tiny success
+      // alert('Status updated');
+    });
+
+    // Close modal when clicking backdrop (but not inner modal)
+    modal.addEventListener('click', (ev)=>{
+      if(ev.target === modal){
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden','true');
+        activeRow = null;
+      }
+    });
+
+    // Re-run updateCounts if table is dynamically changed later
+    // (example: if you later add/remove rows dynamically)
+    // You can expose updateCounts() via window if needed:
+    window.updateReservationCounts = updateCounts;
+
+  </script>
+</body>
+</html>
