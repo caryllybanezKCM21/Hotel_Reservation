@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NAROCAFRA HOTEL — Login / Register</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      background: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1950&q=80')
+      no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      color: #fff;
+    }
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 0;
+    }
+    .form-container {
+      width: 350px;
+      max-width: 95vw;
+      background: rgba(255,255,255,0.25);
+      padding: 0;
+      border-radius: 16px;
+      backdrop-filter: blur(9px);
+      position: relative;
+      z-index: 2;
+      overflow: hidden;
+      box-shadow: 0 8px 35px rgba(0,0,0,0.4);
+    }
+    .slides-wrapper {
+      display: flex;
+      transition: transform 0.45s ease;
+      width: 700px;
+    }
+    .slide-panel {
+      width: 350px;
+      padding: 2rem;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+      color: #fff;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 0.9rem;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.6rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.9);
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+    button {
+      width: 100%;
+      background: #0b84c9;
+      padding: 0.7rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      color: white;
+      cursor: pointer;
+      transition: .2s;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #096aa2;
+    }
+    .toggle-link {
+      text-align: center;
+      margin-top: .8rem;
+    }
+    .toggle-link a {
+      color: #0dcaf0;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+<div class="overlay"></div>
+<div class="form-container">
+  <div class="slides-wrapper" id="slidesWrapper">
+    <!-- LOGIN FORM -->
+    <section class="slide-panel">
+      <h2>Login</h2>
+      <form id="loginForm">
+        <label>Username</label>
+        <input type="text" id="login-username" required>
+        <label>Password</label>
+        <input type="password" id="login-password" required>
+        <label>Select Role</label>
+        <select id="login-role" required>
+          <option disabled selected>Select role</option>
+          <option value="admin">Admin</option>
+          <option value="staff">Staff</option>
+          <option value="user">Guest</option>
+        </select>
+        <button type="submit">Login</button>
+      </form>
+      <p class="toggle-link">No account? <a id="toRegister">Create Account</a></p>
+    </section>
+    <!-- REGISTER FORM -->
+    <section class="slide-panel">
+      <h2>Create Account</h2>
+      <form id="registerForm">
+        <label>Username</label>
+        <input type="text" id="reg-user" required>
+        <label>Email</label>
+        <input type="email" id="reg-email" required>
+        <label>Password</label>
+        <input type="password" id="reg-pass" required>
+        <label>Confirm Password</label>
+        <input type="password" id="reg-confirm" required>
+        <button type="submit">Register</button>
+      </form>
+      <p class="toggle-link">Already have an account? <a id="toLogin">Login here</a></p>
+    </section>
+  </div>
+</div>
+<script>
+  const slides = document.getElementById("slidesWrapper");
+  const btnToReg = document.getElementById("toRegister");
+  const btnToLogin = document.getElementById("toLogin");
+  let slideIndex = 0;
+  function updateSlide() {
+    slides.style.transform = `translateX(-${slideIndex * 350}px)`;
+  }
+  btnToReg.onclick = () => { slideIndex = 1; updateSlide(); };
+  btnToLogin.onclick = () => { slideIndex = 0; updateSlide(); };
+  // Login Redirect
+  document.getElementById("loginForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const role = document.getElementById("login-role").value;
+    if (role === "admin") {
+      window.location.href = "Admin.html";  // Direct to Admin dashboard
+    } else if (role === "staff") {
+      window.location.href = "Staff.html";  // Direct to Staff dashboard
+    } else {
+      window.location.href = "Guest.html";  // Direct to Guest dashboard
+    }
+  });
+  // Register
+  document.getElementById("registerForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const p = document.getElementById("reg-pass").value;
+    const c = document.getElementById("reg-confirm").value;
+    if (p !== c) {
+      alert("Passwords do not match!");
+      return;
+    }
+    alert("Account created successfully!");
+    slideIndex = 0;
+    updateSlide();
+  });
+</script>
+</body>
+</html>
