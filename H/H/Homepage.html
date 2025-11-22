@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NAROCAFRA HOTEL - </title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+    }
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 0;
+    }
+    header {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(4px);
+      z-index: 10;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-weight: bold;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+    nav a:hover {
+      color: #0b84c9;
+    }
+    section {
+      padding: 100px 2rem;
+      text-align: center;
+    }
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 2rem;
+    }
+    .hero h2 {
+      font-size: 3rem;
+      margin: 0 0 1rem 0;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin-bottom: 2rem;
+    }
+    .hero a {
+      padding: 0.8rem 2rem;
+      background: #0b84c9;
+      color: #fff;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    .hero a:hover {
+      background: #096aa2;
+    }
+    .deals-section {
+      background: rgba(0, 0, 0, 0.55);
+      border-radius: 10px;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 2rem auto;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .deals-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .deals-section h3 {
+      color: #0b84c9;
+      margin-bottom: 1rem;
+      font-size: 2rem;
+    }
+    .deals-section p {
+      color: #fff;
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+    }
+    .deals {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+    .deal-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 1rem;
+      width: 300px;
+      text-align: left;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s;
+    }
+    .deal-card:hover {
+      transform: translateY(-5px);
+    }
+    .deal-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    .deal-card h4 {
+      color: #0b84c9;
+      margin: 0 0 0.5rem 0;
+      font-size: 1.2rem;
+    }
+    .deal-card .location {
+      color: #ccc;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+    .deal-card .rating {
+      color: #ffd700;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+    .deal-card .price {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+    .deal-card a {
+      padding: 0.5rem 1rem;
+      background: #0b84c9;
+      color: #fff;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    .deal-card a:hover {
+      background: #096aa2;
+    }
+    .content-section {
+      display: none;
+      background: rgba(0,0,0,0.55);
+      border-radius: 10px;
+      padding: 2rem;
+      max-width: 800px;
+      margin: 2rem auto;
+      text-align: left;
+    }
+    .content-section h3 {
+      color: #0b84c9;
+      margin-top: 0;
+    }
+    .content-section p {
+      color: #fff;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+
+  <header>
+    <h1>NAROCAFRA HOTEL</h1>
+    <nav>
+      <a id="homeLink">Home</a>
+      <a href=>gin</a>
+    </nav>
+  </header>
+
+  <section class="hero" id="hero">
+    <h2>Experience Luxury & Comfort</h2>
+    <p>Welcome to Naracara Hotel — where elegance meets relaxation. Book your stay and enjoy world-class hospitality.</p>
+    <a href="login.html">Get Started</a>
+  </section>
+
+  <!-- Hotel Deals Section - Visible on Scroll -->
+  <section class="deals-section" id="dealsSection">
+    <h3>Hotel Deals Right Now</h3>
+    <p>Discover unbeatable deals on top hotels in the Philippines. Scroll down to explore and book instantly!</p>
+    <div class="deals">
+      <div class="deal-card">
+        <img src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&w=400&q=80" alt="Shangri-La Makati">
+        <h4>Shangri-La Makati</h4>
+        <div class="location">Makati, Metro Manila</div>
+        <div class="rating">★★★★★ (4.8/5)</div>
+        <div class="price">From ₱12,500 per night</div>
+        <a href="#">Check Deal</a>
+      </div>
+      <div class="deal-card">
+        <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=400&q=80" alt="Red Planet Makati">
+        <h4>Red Planet Makati</h4>
+        <div class="location">Makati, Metro Manila</div>
+        <div class="rating">★★★★☆ (4.2/5)</div>
+        <div class="price">From ₱3,200 per night</div>
+        <a href="#">Check Deal</a>
+      </div>
+      <div class="deal-card">
+        <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=400&q=80" alt="The Fort Bonifacio">
+        <h4>The Fort Bonifacio</h4>
+        <div class="location">Taguig, Metro Manila</div>
+        <div class="rating">★★★★★ (4.7/5)</div>
+        <div class="price">From ₱8,900 per night</div>
+        <a href="#">Check Deal</a>
+      </div>
+      <div class="deal-card">
+        <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=400&q=80" alt="Sofitel Philippine Plaza">
+        <h4>Sofitel Philippine Plaza</h4>
+        <div class="location">Pasay, Metro Manila</div>
+        <div class="rating">★★★★☆ (4.5/5)</div>
+        <div class="price">From ₱10,200 per night</div>
+        <a href="#">Check Deal</a>
+      </div>
+      <div class="deal-card">
+        <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=400&q=80" alt="Naracara Hotel Special">
+        <h4>Naracara Hotel - Exclusive Deal</h4>
+        <div class="location">Manila, Philippines</div>
+        <div class="rating">★★★★★ (4.9/5)</div>
+        <div class="price">From ₱5,500 per night</div>
+        <a href="#">Check Deal</a>
+      </div>
+      <div class="deal-card">
+        <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=400&q=80" alt="Cebu City Marriott">
+        <h4>Cebu City Marriott</h4>
+        <div class="location">Cebu City, Cebu</div>
+        <div class="rating">★★★★☆ (4.3/5)</div>
+        <div class="price">From ₱7,800 per night</div>
+        <a href="#">Check Deal</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⭐ INSERTED FOOTER HERE ⭐ -->
+  <footer style="
+    background: rgba(0, 6, 52, 0.85);
+    padding: 3rem 2rem;
+    color: #fff;
+    margin-top: 4rem;
+    text-align: left;
+  ">
+
+    <div style="max-width: 1200px; margin: auto; display: flex; flex-wrap: wrap; gap: 3rem;">
+
+      <!-- Country Selector -->
+      <div style="flex: 1 1 200px;">
+        <h3 style="margin-bottom: 1rem; font-size: 1.2rem;">🌍 Narocafra Hotel </h3>
+      </div>
+
+      <!-- Company Section -->
+      <div style="flex: 1 1 200px;">
+        <h4 style="color:#0b84c9;">Company</h4>
+        <p>About</p>
+        <p>Jobs</p>
+        <p>Press</p>
+        <p>Investor Relations</p>
+      </div>
+
+      <!-- Info Section -->
+      <div style="flex: 1 1 200px;">
+        <h4 style="color:#0b84c9;">Information</h4>
+        <p>Help</p>
+        <p>Terms & Conditions</p>
+        <p>Privacy Notice</p>
+        <p>Cybersecurity</p>
+      </div>
+
+      <!-- Newsletter -->
+      <div style="flex: 2 1 300px;">
+        <h3 style="margin-bottom: .5rem;">Get exclusive inspiration for your next stay — subscribe to our newsletter.</h3>
+
+        <div style="display:flex; gap:.5rem; margin-top:1rem;">
+          <input type="email" placeholder="Email address" 
+                style="padding:.7rem; flex:1; border-radius:5px; border:none;">
+          <button style="
+            background:#0b84c9;
+            color:#fff;
+            border:none;
+            padding:.7rem 1.2rem;
+            border-radius:6px;
+            cursor:pointer;
+            font-weight:bold;
+          ">Subscribe</button>
+        </div>
+      </div>
+
+    </div>
+
+    <p style="margin-top:2rem; text-align:center; font-size:.9rem; opacity:0.7;">
+      © 2025 Narocafra Hotel — All Rights Reserved.
+    </p>
+
+  </footer>
+  <!-- END FOOTER -->
+
+  <!-- Content inside Home -->
+  <div class="content-section" id="homeContent">
+    <section>
+      <h3>About Us</h3>
+      <p>Naracara Hotel has been serving guests with exceptional comfort and luxury for over a decade. Our mission is to provide an unforgettable stay with personalized services, elegant accommodations, and world-class amenities.</p>
+    </section>
+    <section>
+      <h3>Contact Us</h3>
+      <p>Have questions or want to make a booking? Reach out to us:</p>
+      <p>Email: info@naracarahotel.com</p>
+      <p>Phone: +63 912 345 6789</p>
+      <p>Address: 123 Luxury Ave, Manila, Philippines</p>
+    </section>
+  </div>
+
+  <script>
+    const homeLink = document.getElementById('homeLink');
+    const homeContent = document.getElementById('homeContent');
+    const dealsSection = document.getElementById('dealsSection');
+
+    homeLink.addEventListener('click', () => {
+      // toggle visibility
+      if(homeContent.style.display === 'block') {
+        homeContent.style.display = 'none';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        homeContent.style.display = 'block';
+        homeContent.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+
+    // Scroll to show deals section
+    window.addEventListener('scroll', () => {
+      const sectionTop = dealsSection.offsetTop;
+      const scrollTop = window.pageYOffset;
+      const windowHeight = window.innerHeight;
+
+      if (scrollTop > sectionTop - windowHeight + 100) {
+        dealsSection.classList.add('visible');
+      }
+    });
+  </script>
+</body>
+</html>
