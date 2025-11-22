@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NAROCAFRA HOTEL - Admin Panel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f3f6fb;
+      display: flex;
+      height: 100vh;
+    }
+    nav {
+      width: 240px;
+      background: white;
+      padding: 1rem;
+      box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+    }
+    nav ul li {
+      margin-bottom: 1rem;
+    }
+    nav button {
+      width: 100%;
+      background: transparent;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      text-align: left;
+    }
+    nav button.active, nav button:hover {
+      background: #0b84c9;
+      color: white;
+    }
+    main {
+      flex-grow: 1;
+      padding: 2rem;
+      box-sizing: border-box;
+      overflow: auto;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      align-items: center;
+    }
+    header h1 {
+      margin: 0;
+      color: #0b84c9;
+    }
+    button.logout {
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    section { display: none; }
+    section.active { display: block; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    th, td {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    .section-title {
+      color: #0b84c9;
+      margin-bottom: 1rem;
+    }
+    form label {
+      display: block;
+      margin: 0.5rem 0 0.2rem;
+      color: #555;
+    }
+    form input, form select, form textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    form button {
+      margin-top: 1rem;
+      background: #0b84c9;
+      color: white;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .report-container {
+      margin-top: 2rem;
+      display: none;
+    }
+    .report-container.active {
+      display: block;
+    }
+    .report-summary {
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 1rem;
+    }
+    .report-summary h3 {
+      margin-top: 0;
+      color: #0b84c9;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><button class="nav-btn active" data-section="manage-reservations">Manage Reservations</button></li>
+      <li><button class="nav-btn" data-section="manage-rooms-services">Manage Rooms/Services</button></li>
+      <li><button class="nav-btn" data-section="payments-billing">Payment/Billing Records</button></li>
+      <li><button class="nav-btn" data-section="generate-reports">Generate Reports</button></li>
+      <li><button class="nav-btn" data-section="user-management">User Management</button></li>
+      <li><button class="logout" onclick="logout()">Logout</button></li>
+    </ul>
+  </nav>
+  <main>
+    <header>
+      <h1>Admin Panel</h1>
+    </header>
+    <section id="manage-reservations" class="active">
+      <h2 class="section-title">Manage Reservations</h2>
+      <table>
+        <thead>
+          <tr><th>Booking ID</th><th>User</th><th>Room/Service</th><th>Dates</th><th>Status</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>R001</td><td>John Doe</td><td>Deluxe Room</td><td>2023-12-01 to 2023-12-05</td><td>Confirmed</td><td><button onclick="alert('Updated!')">Update</button></td></tr>
+          <tr><td>S002</td><td>Mary Jane</td><td>Spa Package</td><td>2023-12-07</td><td>Pending</td><td><button onclick="alert('Updated!')">Update</button></td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section id="manage-rooms-services">
+      <h2 class="section-title">Manage Rooms/Services</h2>
+      <p>Add, update, or remove room types and service offerings here.</p>
+      <form>
+        <label for="roomType">Room/Service Name</label>
+        <input type="text" id="roomType" placeholder="Enter name" />
+        <label for="description">Description</label>
+        <textarea id="description" rows="3" placeholder="Enter description"></textarea>
+        <button type="button" onclick="alert('Saved!')">Save</button>
+      </form>
+    </section>
+    <section id="payments-billing">
+      <h2 class="section-title">Payment/Billing Records</h2>
+      <p>View and process payment records here (simulated view).</p>
+      <table>
+        <thead>
+          <tr><th>Payment ID</th><th>User</th><th>Amount</th><th>Date</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>P101</td><td>Hershey</td><td>200</td><td>2023-11-20</td><td>Paid</td></tr>
+          <tr><td>P102</td><td>Mary Jane</td><td>100</td><td>2023-11-22</td><td>Pending</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section id="generate-reports">
+      <h2 class="section-title">Generate Reports</h2>
+      <p>Select the type of report and date range to generate a detailed summary.</p>
+      <form id="report-form">
+        <label for="report-type">Report Type</label>
+        <select id="report-type">
+          <option value="daily">Daily Report</option>
+          <option value="monthly">Monthly Report</option>
+        </select>
+        <label for="start-date">Start Date</label>
+        <input type="date" id="start-date" required />
+        <label for="end-date">End Date (for Monthly, select a month range)</label>
+        <input type="date" id="end-date" required />
+        <button type="button" onclick="generateReport()">Generate Report</button>
+      </form>
+      <div id="daily-report" class="report-container">
+        <div class="report-summary">
+          <h3>Daily Report Summary (Sample Data)</h3>
+          <p><strong>Date:</strong> 2023-12-01</p>
+          <p><strong>Total Rooms Available:</strong> 50</p>
+          <p><strong>Rooms Occupied:</strong> 45 (90% Occupancy Rate)</p>
+          <p><strong>Check-ins:</strong> 10</p>
+          <p><strong>Check-outs:</strong> 8</p>
+          <p><strong>Cancellations:</strong> 2</p>
+          <p><strong>Total Revenue from Rooms:</strong> ₱4,500</p>
+          <p><strong>Total Revenue from Services:</strong> ₱800</p>
+          <p><strong>Net Revenue:</strong> ₱5,300</p>
+        </div>
+        <table>
+          <thead>
+            <tr><th>Booking ID</th><th>User</th><th>Room/Service</th><th>Check-in/Check-out</th><th>Revenue</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>R001</td><td>John Doe</td><td>Deluxe Room</td><td>Check-in</td><td>₱150</td></tr>
+            <tr><td>R003</td><td>Alice Smith</td><td>Standard Room</td><td>Check-out</td><td>₱120</td></tr>
+            <tr><td>S004</td><td>Bob Johnson</td><td>Spa Package</td><td>Service Used</td><td>₱100</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="monthly-report" class="report-container">
+        <div class="report-summary">
+          <h3>Monthly Report Summary (Sample Data)</h3>
+          <p><strong>Month:</strong> December 2023</p>
+          <p><strong>Average Occupancy Rate:</strong> 85%</p>
+          <p><strong>Total Check-ins:</strong> 150</p>
+          <p><strong>Total Check-outs:</strong> 145</p>
+          <p><strong>Total Cancellations:</strong> 10</p>
+          <p><strong>Average Length of Stay:</strong> 3.2 nights</p>
+          <p><strong>Total Revenue from Rooms:</strong> ₱45,000</p>
+          <p><strong>Total Revenue from Services:</strong> ₱8,500</p>
+          <p><strong>Net Revenue:</strong> ₱53,500</p>
+          <p><strong>Top Performing Room Type:</strong> Deluxe Room (Revenue: ₱20,000)</p>
+        </div>
+        <table>
+          <thead>
+            <tr><th>Day</th><th>Occupancy Rate</th><th>Check-ins</th><th>Check-outs</th><th>Revenue</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>2023-12-01</td><td>90%</td><td>10</td><td>8</td><td>₱1,200</td></tr>
+            <tr><td>2023-12-02</td><td>88%</td><td>9</td><td>10</td><td>₱1,150</td></tr>
+            <tr><td>2023-12-03</td><td>92%</td><td>11</td><td>9</td><td>₱1,300</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section id="user-management">
+      <h2 class="section-title">User Management</h2>
+      <p>Manage registered users here.</p>
+      <table>
+        <thead>
+          <tr><th>User ID</th><th>Name</th
