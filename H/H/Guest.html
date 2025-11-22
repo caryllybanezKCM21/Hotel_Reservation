@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NAROCAFRA HOTEL - Guest Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f3f6fb;
+      display: flex;
+      height: 100vh;
+    }
+    nav {
+      width: 220px;
+      background: white;
+      padding: 1rem;
+      box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    nav ul li {
+      margin-bottom: 1rem;
+    }
+    nav button {
+      width: 100%;
+      background: transparent;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      text-align: left;
+    }
+    nav button.active, nav button:hover {
+      background: #0b84c9;
+      color: white;
+    }
+    main {
+      flex-grow: 1;
+      padding: 2rem;
+      box-sizing: border-box;
+      overflow: auto;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      align-items: center;
+    }
+    header h1 {
+      margin: 0;
+      color: #0b84c9;
+    }
+    button.logout {
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+    }
+    section { display: none; }
+    section.active { display: block; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1rem;
+    }
+    th, td {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    .badge {
+      border-radius: 12px;
+      padding: 0.2rem 0.6rem;
+      font-size: 0.8rem;
+      color: white;
+    }
+    .badge.upcoming { background: #0b84c9; }
+    .badge.past { background: #6b7280; }
+    .badge.paid { background: #10b981; }
+    .badge.pending { background: #f59e0b; }
+    .section-title { color: #0b84c9; margin-bottom: 1rem; }
+    form label { display: block; margin: 0.5rem 0 0.2rem; color: #555; }
+    form input, form select, form textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    form button {
+      margin-top: 1rem;
+      background: #0b84c9;
+      color: white;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .notification {
+      background: #eef6fb;
+      border-left: 5px solid #0b84c9;
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 6px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><button class="nav-btn active" data-section="bookings-section">My Bookings</button></li>
+      <li><button class="nav-btn" data-section="notifications-section">Notifications</button></li>
+      <li><button class="nav-btn" data-section="rooms-services-section">Rooms & Services</button></li>
+      <li><button class="nav-btn" data-section="reservation-section">Make a Reservation</button></li>
+      <li><button class="logout" onclick="logout()">Logout</button></li>
+    </ul>
+  </nav>
+  <main>
+    <header>
+      <h1>Welcome, Guest</h1>
+    </header>
+    <section id="bookings-section" class="active">
+      <h2 class="section-title">My Bookings</h2>
+      <h3>Upcoming Stays</h3>
+      <table>
+        <thead><tr><th>Booking ID</th><th>Room/Service</th><th>Dates</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>R001</td><td>Deluxe Room</td><td>2023-12-01 to 2023-12-05</td><td><span class="badge upcoming">Confirmed</span></td></tr>
+          <tr><td>S002</td><td>Spa Package</td><td>2023-12-07</td><td><span class="badge pending">Pending</span></td></tr>
+        </tbody>
+      </table>
+      <h3>Past Stays</h3>
+      <table>
+        <thead><tr><th>Booking ID</th><th>Room/Service</th><th>Dates</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>R000</td><td>Suite</td><td>2023-10-10 to 2023-10-15</td><td><span class="badge past">Completed</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section id="notifications-section">
+      <h2 class="section-title">Notifications</h2>
+      <div class="notification">Your booking R001 is confirmed. We look forward to your stay!</div>
+      <div class="notification">New spa packages available. Check the Rooms & Services section.</div>
+    </section>
+    <section id="rooms-services-section">
+      <h2 class="section-title">Rooms & Services</h2>
+      <ul>
+        <li><strong>Room Types:</strong> Deluxe, Suite, Standard</li>
+        <li><strong>Dining & Restaurant:</strong> In-house buffet, à la carte options</li>
+        <li><strong>Spa and Wellness:</strong> Massage, sauna, beauty treatments</li>
+        <li><strong>Event Halls:</strong> Conference, wedding packages</li>
+        <li><strong>Other Amenities:</strong> Pool, gym, free Wi-Fi</li>
+      </ul>
+    </section>
+    <section id="reservation-section">
+      <h2 class="section-title">Make a Reservation</h2>
+      <form id="reservationForm">
+        <label for="serviceSelect">Select Room/Service</label>
+        <select id="serviceSelect" required>
+          <option value="">-- Select --</option>
+          <option value="deluxe">Deluxe Room</option>
+          <option value="suite">Suite</option>
+          <option value="standard">Standard Room</option>
+          <option value="dining">Dining</option>
+          <option value="spa">Spa & Wellness</option>
+          <option value="event">Event Hall</option>
+        </select>
+        <label for="dateCheck">Select Date(s)</label>
+        <input type="date" id="dateCheck" required />
+        <label for="additionalInfo">Booking Details</label>
+        <textarea id="additionalInfo" rows="3" placeholder="Any special request or details..."></textarea>
+        <button type="submit">Check Availability</button>
+      </form>
+      <div id="availabilityResult" style="margin-top:1rem;"></div>
+    </section>
+  </main>
+  <script>
+    const navButtons = document.querySelectorAll('nav button.nav-btn');
+    const sections = document.querySelectorAll('main section');
+    navButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        navButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        sections.forEach(sec => sec.classList.remove('active'));
+        const target = document.getElementById(btn.getAttribute('data-section'));
+        if(target) target.classList.add('active');
+      });
+    });
+    document.getElementById('reservationForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const service = document.getElementById('serviceSelect').value;
+      const date = document.getElementById('dateCheck').value;
+      const availabilityDiv = document.getElementById('availabilityResult');
+      if(!service || !date) {
+        availabilityDiv.innerHTML = '<p style="color:red;">Please select a room/service and date.</p>';
+        return;
+      }
+      availabilityDiv.innerHTML = 'Checking availability...';
+      setTimeout(() => {
+        availabilityDiv.innerHTML = `<p style="color:green;">Available! Please proceed with booking payment process.</p>
+          <button onclick="alert('Booking confirmed!')">Proceed to Payment</button>`;
+      }, 1500);
+    });
+    function logout() {
+      window.location.href = 'login.html';
+    }
+  </script>
+</body>
+</html>
