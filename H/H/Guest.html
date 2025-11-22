@@ -1,221 +1,384 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>NAROCAFRA HOTEL - Guest Dashboard</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f3f6fb;
-      display: flex;
-      height: 100vh;
-    }
-    nav {
-      width: 220px;
-      background: white;
-      padding: 1rem;
-      box-shadow: 2px 0 8px rgba(0,0,0,0.1);
-      box-sizing: border-box;
-    }
-    nav ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    nav ul li {
-      margin-bottom: 1rem;
-    }
-    nav button {
-      width: 100%;
-      background: transparent;
-      border: none;
-      font-size: 1rem;
-      cursor: pointer;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      text-align: left;
-    }
-    nav button.active, nav button:hover {
-      background: #0b84c9;
-      color: white;
-    }
-    main {
-      flex-grow: 1;
-      padding: 2rem;
-      box-sizing: border-box;
-      overflow: auto;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 2rem;
-      align-items: center;
-    }
-    header h1 {
-      margin: 0;
-      color: #0b84c9;
-    }
-    button.logout {
-      background: #ef4444;
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      cursor: pointer;
-      width: 100%;
-    }
-    section { display: none; }
-    section.active { display: block; }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 1rem;
-    }
-    th, td {
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      text-align: left;
-    }
-    .badge {
-      border-radius: 12px;
-      padding: 0.2rem 0.6rem;
-      font-size: 0.8rem;
-      color: white;
-    }
-    .badge.upcoming { background: #0b84c9; }
-    .badge.past { background: #6b7280; }
-    .badge.paid { background: #10b981; }
-    .badge.pending { background: #f59e0b; }
-    .section-title { color: #0b84c9; margin-bottom: 1rem; }
-    form label { display: block; margin: 0.5rem 0 0.2rem; color: #555; }
-    form input, form select, form textarea {
-      width: 100%;
-      padding: 0.5rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-    }
-    form button {
-      margin-top: 1rem;
-      background: #0b84c9;
-      color: white;
-      border: none;
-      padding: 0.7rem 1.2rem;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .notification {
-      background: #eef6fb;
-      border-left: 5px solid #0b84c9;
-      padding: 1rem;
-      margin: 1rem 0;
-      border-radius: 6px;
-      color: #333;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NAROCAFRA HOTEL - Guest Panel</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+:root{
+  --blue:#0b84c9;
+  --muted:#f3f6fb;
+  --card-bg:#ffffff;
+  --success:#28a745;
+  --danger:#dc3545;
+  --accent:#0b84c9;
+  --text:#263238;
+}
+*{box-sizing:border-box;}
+body { font-family:"Segoe UI", Roboto, Arial, sans-serif; margin:0; background:var(--muted); display:flex; min-height:100vh; color:var(--text);}
+nav { width:240px; background:var(--card-bg); padding:1.25rem; box-shadow:2px 0 10px rgba(0,0,0,0.06); display:flex; flex-direction:column; gap:0.5rem;}
+.brand { font-weight:700; color:var(--accent); font-size:1.05rem; margin-bottom:0.75rem;}
+nav ul{list-style:none; padding:0;margin:0;}
+nav li{margin-bottom:0.75rem;}
+.nav-btn { width:100%; display:flex; align-items:center; padding:0.55rem 0.9rem; border-radius:8px; border:none; background:transparent; cursor:pointer; font-size:0.98rem; color:#1f2d35; transition: all .18s ease;}
+.nav-btn i{margin-right:0.5rem;width:20px;}
+.nav-btn:hover{background:rgba(11,132,201,0.12); color:var(--accent);}
+.nav-btn.active{background:var(--accent); color:#fff;}
+.logout { margin-top:auto; background:var(--danger); color:white; border:none; padding:0.6rem 0.8rem; border-radius:8px; cursor:pointer; width:100%;}
+.logout:hover{opacity:0.95;}
+main{flex:1; padding:26px 32px; overflow:auto;}
+header{display:flex; justify-content:space-between; align-items:center; gap:1rem; margin-bottom:18px;}
+header h1{margin:0;color:var(--accent); font-size:1.75rem;font-weight:700;}
+.stats{display:flex;gap:12px;margin-bottom:18px;flex-wrap:wrap;}
+.stat-card{background:var(--card-bg);padding:12px 16px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);min-width:150px;display:flex;align-items:center;gap:10px; cursor:pointer; transition: transform 0.2s;}
+.stat-card:hover { transform: scale(1.05); }
+.stat-icon{font-size:1.5rem;color:var(--accent);}
+.stat-content{flex:1;}
+.stat-title{font-size:0.85rem;color:#6b7a83;margin-bottom:6px;}
+.stat-value{font-size:1.25rem;font-weight:700;color:#1f2d35;}
+.section-title{color:var(--accent);margin:0 0 12px 0;font-size:1.3rem;}
+p.lead{margin:0 0 12px 0;color:#48545a;}
+.table-container{background:transparent; margin-top:12px;}
+table{width:100%;border-collapse:collapse;background:var(--card-bg);box-shadow:0 2px 8px rgba(0,0,0,0.06);border-radius:6px;overflow:hidden;}
+thead tr{background:#fbfcfd;}
+th, td{padding:14px 18px;border-bottom:1px solid #eef1f3;text-align:left;font-size:0.95rem;}
+th{color:#122127;font-weight:700;font-size:0.98rem;border-bottom:2px solid #e9edf0;}
+tbody tr:hover{background:#fafcfe;}
+.modify-btn{background:var(--success);color:white;border:none;padding:8px 12px;border-radius:6px;cursor:pointer;margin-right:8px;font-weight:600;}
+.modify-btn:hover{filter:brightness(.95);}
+.cancel-btn{background:var(--danger);color:white;border:none;padding:8px 12px;border-radius:6px;cursor:pointer;font-weight:600;}
+.cancel-btn:hover{filter:brightness(.95);}
+.room-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:16px; margin-top:16px;}
+.room-card{background:var(--card-bg); border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.06); overflow:hidden; cursor:pointer; transition: transform 0.2s;}
+.room-card:hover { transform: scale(1.05); }
+.room-card img{width:100%; height:160px; object-fit:cover;}
+.room-card-content{padding:12px;}
+.room-card-content h3{margin:0 0 6px; font-size:1.1rem; color:var(--accent);}
+.room-card-content p{margin:0 0 8px; color:#48545a;}
+.room-card-content button{background:var(--accent); color:white; border:none; padding:8px 12px; border-radius:6px; cursor:pointer;}
+.room-card-content button:hover{filter:brightness(.95);}
+.badge{padding:6px 10px;border-radius:16px;font-size:0.85rem;font-weight:600;display:inline-block;}
+.badge.confirmed{background:rgba(11,132,201,0.12); color:var(--accent);}
+.badge.pending{background:rgba(255,193,7,0.12); color:#f59e0b;}
+.badge.cancelled{background:rgba(220,53,69,0.08); color:var(--danger);}
+.modal-backdrop{position:fixed; inset:0; background:rgba(0,0,0,0.35); display:none; align-items:center; justify-content:center; z-index:2000;}
+.modal{background:white; padding:20px; border-radius:10px; min-width:320px; box-shadow:0 6px 20px rgba(0,0,0,0.2);}
+.modal h3{margin:0 0 12px 0;}
+.modal img{width:100%; height:150px; object-fit:cover; border-radius:6px; margin-bottom:10px;}
+.modal label{display:block; margin:6px 0 4px;}
+.modal input{width:100%; padding:8px; border-radius:6px; border:1px solid #d6dde3; margin-bottom:10px;}
+.modal button{padding:8px 10px; border-radius:8px; border:none; cursor:pointer;}
+.btn-secondary{background:#eef2f6;}
+.btn-primary{background:var(--accent); color:#fff;}
+#search-bar,#search-services{padding:8px; width:100%; max-width:400px; border-radius:6px; border:1px solid #d6dde3; margin-bottom:12px;}
+@media (max-width:900px){nav{display:none;} main{padding:18px;} .stats{flex-direction:column;}}
+</style>
 </head>
 <body>
-  <nav>
-    <ul>
-      <li><button class="nav-btn active" data-section="bookings-section">My Bookings</button></li>
-      <li><button class="nav-btn" data-section="notifications-section">Notifications</button></li>
-      <li><button class="nav-btn" data-section="rooms-services-section">Rooms & Services</button></li>
-      <li><button class="nav-btn" data-section="reservation-section">Make a Reservation</button></li>
-      <li><button class="logout" onclick="logout()">Logout</button></li>
-    </ul>
-  </nav>
-  <main>
-    <header>
-      <h1>Welcome, Guest</h1>
-    </header>
-    <section id="bookings-section" class="active">
-      <h2 class="section-title">My Bookings</h2>
-      <h3>Upcoming Stays</h3>
-      <table>
-        <thead><tr><th>Booking ID</th><th>Room/Service</th><th>Dates</th><th>Status</th></tr></thead>
-        <tbody>
-          <tr><td>R001</td><td>Deluxe Room</td><td>2023-12-01 to 2023-12-05</td><td><span class="badge upcoming">Confirmed</span></td></tr>
-          <tr><td>S002</td><td>Spa Package</td><td>2023-12-07</td><td><span class="badge pending">Pending</span></td></tr>
-        </tbody>
-      </table>
-      <h3>Past Stays</h3>
-      <table>
-        <thead><tr><th>Booking ID</th><th>Room/Service</th><th>Dates</th><th>Status</th></tr></thead>
-        <tbody>
-          <tr><td>R000</td><td>Suite</td><td>2023-10-10 to 2023-10-15</td><td><span class="badge past">Completed</span></td></tr>
-        </tbody>
-      </table>
-    </section>
-    <section id="notifications-section">
-      <h2 class="section-title">Notifications</h2>
-      <div class="notification">Your booking R001 is confirmed. We look forward to your stay!</div>
-      <div class="notification">New spa packages available. Check the Rooms & Services section.</div>
-    </section>
-    <section id="rooms-services-section">
-      <h2 class="section-title">Rooms & Services</h2>
-      <ul>
-        <li><strong>Room Types:</strong> Deluxe, Suite, Standard</li>
-        <li><strong>Dining & Restaurant:</strong> In-house buffet, à la carte options</li>
-        <li><strong>Spa and Wellness:</strong> Massage, sauna, beauty treatments</li>
-        <li><strong>Event Halls:</strong> Conference, wedding packages</li>
-        <li><strong>Other Amenities:</strong> Pool, gym, free Wi-Fi</li>
-      </ul>
-    </section>
-    <section id="reservation-section">
-      <h2 class="section-title">Make a Reservation</h2>
-      <form id="reservationForm">
-        <label for="serviceSelect">Select Room/Service</label>
-        <select id="serviceSelect" required>
-          <option value="">-- Select --</option>
-          <option value="deluxe">Deluxe Room</option>
-          <option value="suite">Suite</option>
-          <option value="standard">Standard Room</option>
-          <option value="dining">Dining</option>
-          <option value="spa">Spa & Wellness</option>
-          <option value="event">Event Hall</option>
-        </select>
-        <label for="dateCheck">Select Date(s)</label>
-        <input type="date" id="dateCheck" required />
-        <label for="additionalInfo">Booking Details</label>
-        <textarea id="additionalInfo" rows="3" placeholder="Any special request or details..."></textarea>
-        <button type="submit">Check Availability</button>
-      </form>
-      <div id="availabilityResult" style="margin-top:1rem;"></div>
-    </section>
-  </main>
-  <script>
-    const navButtons = document.querySelectorAll('nav button.nav-btn');
-    const sections = document.querySelectorAll('main section');
-    navButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        navButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        sections.forEach(sec => sec.classList.remove('active'));
-        const target = document.getElementById(btn.getAttribute('data-section'));
-        if(target) target.classList.add('active');
-      });
+
+<nav>
+<div class="brand">NAROCAFRA HOTEL — Guest</div>
+<ul>
+<li><button class="nav-btn active" data-section="my-reservations"><i class="fas fa-calendar-check"></i> My Reservations</button></li>
+<li><button class="nav-btn" data-section="book-room"><i class="fas fa-bed"></i> Book a Room</button></li>
+<li><button class="nav-btn" data-section="services"><i class="fas fa-spa"></i> Services</button></li>
+<li><button class="nav-btn" data-section="profile"><i class="fas fa-user"></i> Profile</button></li>
+</ul>
+<button class="logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+</nav>
+
+<main>
+<header>
+<h1>Guest Dashboard - Narocafra Hotel</h1>
+<div style="color:#6c7a82; font-size:0.95rem; margin-top:4px;">Manage your bookings, explore services, and update your profile</div>
+</header>
+
+<div class="stats">
+<div class="stat-card" onclick="alert('Upcoming bookings: View details in My Reservations.')"><i class="fas fa-calendar-alt stat-icon"></i><div class="stat-content"><div class="stat-title">Upcoming Bookings</div><div id="count-upcoming" class="stat-value">0</div></div></div>
+<div class="stat-card" onclick="alert('Confirmed bookings: View details in My Reservations.')"><i class="fas fa-check-circle stat-icon"></i><div class="stat-content"><div class="stat-title">Confirmed</div><div id="count-confirmed" class="stat-value">0</div></div></div>
+<div class="stat-card" onclick="alert('Pending bookings: View details in My Reservations.')"><i class="fas fa-clock stat-icon"></i><div class="stat-content"><div class="stat-title">Pending</div><div id="count-pending" class="stat-value">0</div></div></div>
+<div class="stat-card" onclick="alert('Total spent: Based on your bookings.')"><i class="fas fa-dollar-sign stat-icon"></i><div class="stat-content"><div class="stat-title">Total Spent</div><div id="total-spent" class="stat-value">$0</div></div></div>
+</div>
+
+<section id="my-reservations">
+<h2 class="section-title">My Reservations</h2>
+<p class="lead">View and manage your bookings.</p>
+<div class="table-container">
+<table id="reservation-table">
+<thead>
+<tr>
+<th>Booking ID</th>
+<th>Name</th>
+<th>Type</th>
+<th>Guests</th>
+<th>Dates</th>
+<th>Status</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody id="reservation-tbody"></tbody>
+</table>
+</div>
+</section>
+
+<section id="book-room" style="display:none">
+<h2 class="section-title">Book a Room</h2>
+<input type="text" id="search-bar" placeholder="Search rooms...">
+<div class="room-grid" id="room-grid">
+<!-- Rooms -->
+<div class="room-card">
+<img src="https://via.placeholder.com/400x200?text=Standard+Room" alt="Standard Room">
+<div class="room-card-content">
+<h3>Standard Room</h3>
+<p>Price: $80/night</p>
+<button class="book-now-btn" data-type="room" data-name="Standard Room" data-price="80" data-img="https://via.placeholder.com/400x200?text=Standard+Room">Book Now</button>
+</div>
+</div>
+<div class="room-card">
+<img src="https://via.placeholder.com/400x200?text=Deluxe+Room" alt="Deluxe Room">
+<div class="room-card-content">
+<h3>Deluxe Room</h3>
+<p>Price: $120/night</p>
+<button class="book-now-btn" data-type="room" data-name="Deluxe Room" data-price="120" data-img="https://via.placeholder.com/400x200?text=Deluxe+Room">Book Now</button>
+</div>
+</div>
+<div class="room-card">
+<img src="https://via.placeholder.com/400x200?text=Executive+Suite" alt="Executive Suite">
+<div class="room-card-content">
+<h3>Executive Suite</h3>
+<p>Price: $200/night</p>
+<button class="book-now-btn" data-type="room" data-name="Executive Suite" data-price="200" data-img="https://via.placeholder.com/400x200?text=Executive+Suite">Book Now</button>
+</div>
+</div>
+</div>
+</section>
+
+<section id="services" style="display:none">
+<h2 class="section-title">Services & Amenities</h2>
+<input type="text" id="search-services" placeholder="Search services...">
+<div class="room-grid" id="services-grid">
+<!-- Services -->
+<div class="room-card">
+<img src="https://via.placeholder.com/400x200?text=Spa+%26+Wellness" alt="Spa & Wellness">
+<div class="room-card-content">
+<h3>Spa & Wellness</h3>
+<p>Price: $50/session</p>
+<button class="book-now-btn" data-type="service" data-name="Spa & Wellness" data-price="50" data-img="https://via.placeholder.com/400x200?text=Spa+%26+Wellness">Book Now</button>
+</div>
+</div>
+<div class="room-card">
+<img src="https://via.placeholder.com/400x200?text=Event+Hall" alt="Event Hall">
+<div class="room-card-content">
+<h3>Event Hall</h3>
+<p>Price: $300/day</p>
+<button class="book-now-btn" data-type="service" data-name="Event Hall" data-price="300" data-img="https://via.placeholder.com/400x200?text=Event+Hall">Book Now</button>
+</div>
+</div>
+<div class="room-card">
+<img src="https://via.placeholder.com/400x200?text=Gym+Access" alt="Gym Access">
+<div class="room-card-content">
+<h3>Gym Access</h3>
+<p>Price: $20/day</p>
+<button class="book-now-btn" data-type="service" data-name="Gym Access" data-price="20" data-img="https://via.placeholder.com/400x200?text=Gym+Access">Book Now</button>
+</div>
+</div>
+<div class="room-card">
+<img src="https://via.placeholder.com/400x200?text=Dining+Package" alt="Dining Package">
+<div class="room-card-content">
+<h3>Dining & Restaurant</h3>
+<p>Price: $40/meal</p>
+<button class="book-now-btn" data-type="service" data-name="Dining & Restaurant" data-price="40" data-img="https://via.placeholder.com/400x200?text=Dining+Package">Book Now</button>
+</div>
+</div>
+<div class="room-card">
+<img src="https://via.placeholder.com/400x200?text=Lounge+Bar" alt="Lounge & Bar">
+<div class="room-card-content">
+<h3>Lounge & Bar</h3>
+<p>Price: $30/session</p>
+<button class="book-now-btn" data-type="service" data-name="Lounge & Bar" data-price="30" data-img="https://via.placeholder.com/400x200?text=Lounge+Bar">Book Now</button>
+</div>
+</div>
+</div>
+</section>
+
+<section id="profile" style="display:none">
+<h2 class="section-title">Profile</h2>
+<p class="lead">Update your information.</p>
+<p>Profile editing not implemented (demo). Click back to other sections!</p>
+</section>
+
+</main>
+
+<!-- Booking Modal -->
+<div id="booking-modal" class="modal-backdrop" aria-hidden="true">
+<div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+<img id="modal-img" src="" alt="Item Image">
+<h3 id="modal-title">Book Now</h3>
+<p id="modal-price" style="margin-bottom:10px; color:#48545a;"></p>
+<label for="input-name">Full Name</label>
+<input type="text" id="input-name" placeholder="Your Name" required>
+<label for="input-guests">Number of Guests</label>
+<input type="number" id="input-guests" min="1" max="10" value="1" required>
+<label for="input-checkin">Check-in Date</label>
+<input type="date" id="input-checkin" required>
+<label for="input-checkout">Check-out Date</label>
+<input type="date" id="input-checkout" required>
+<div style="display:flex; justify-content:flex-end; gap:10px; margin-top:8px;">
+<button class="btn-secondary" id="modal-cancel">Cancel</button>
+<button class="btn-primary" id="modal-book">Book Now</button>
+</div>
+</div>
+</div>
+
+<script>
+let bookings = [];
+let bookingCounter = 1001;
+
+// Navigation
+const navButtons = document.querySelectorAll(".nav-btn");
+const sections = document.querySelectorAll("main section");
+navButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+        navButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const target = btn.dataset.section;
+        sections.forEach(s => s.style.display = s.id === target ? "block" : "none");
     });
-    document.getElementById('reservationForm').addEventListener('submit', function(e){
-      e.preventDefault();
-      const service = document.getElementById('serviceSelect').value;
-      const date = document.getElementById('dateCheck').value;
-      const availabilityDiv = document.getElementById('availabilityResult');
-      if(!service || !date) {
-        availabilityDiv.innerHTML = '<p style="color:red;">Please select a room/service and date.</p>';
+});
+
+// Logout
+function logout() {
+    if (confirm("Are you sure you want to log out?")) alert("Logged out (demo).");
+}
+
+// Booking Modal
+const modal = document.getElementById("booking-modal");
+const modalImg = document.getElementById("modal-img");
+const modalTitle = document.getElementById("modal-title");
+const modalPrice = document.getElementById("modal-price");
+const inputName = document.getElementById("input-name");
+const inputGuests = document.getElementById("input-guests");
+const inputCheckin = document.getElementById("input-checkin");
+const inputCheckout = document.getElementById("input-checkout");
+let currentBookingData = null;
+
+// Open Modal
+document.querySelectorAll(".book-now-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+        currentBookingData = btn.dataset;
+        modalImg.src = currentBookingData.img;
+        modalTitle.textContent = currentBookingData.name;
+        modalPrice.textContent = "$" + current
+
+    });
+});
+
+// Close modal
+modalCancel.addEventListener("click", () => bookingModal.style.display = "none");
+
+// Confirm booking with validation
+modalBook.addEventListener("click", () => {
+    const name = inputName.value.trim();
+    const guests = parseInt(inputGuests.value);
+    const checkin = inputCheckin.value;
+    const checkout = inputCheckout.value;
+    const today = new Date().toISOString().split('T')[0];
+
+    if(name.length < 3){
+        alert("Guest name must be at least 3 characters.");
         return;
-      }
-      availabilityDiv.innerHTML = 'Checking availability...';
-      setTimeout(() => {
-        availabilityDiv.innerHTML = `<p style="color:green;">Available! Please proceed with booking payment process.</p>
-          <button onclick="alert('Booking confirmed!')">Proceed to Payment</button>`;
-      }, 1500);
-    });
-    function logout() {
-      window.location.href = 'login.html';
     }
-  </script>
+    if(isNaN(guests) || guests < 1 || guests > 10){
+        alert("Number of guests must be between 1 and 10.");
+        return;
+    }
+    if(!checkin || checkin < today){
+        alert("Check-in date cannot be in the past.");
+        return;
+    }
+    if(!checkout || checkout <= checkin){
+        alert("Check-out must be after check-in.");
+        return;
+    }
+
+    const booking = {
+        id: bookingCounter++,
+        name,
+        type: currentBookingItem.type,
+        guests,
+        dates: `${checkin} → ${checkout}`,
+        status: "Confirmed",
+        price: currentBookingItem.price
+    };
+
+    bookings.push(booking);
+    addBookingToTable(booking);
+
+    alert(`Booking successful for ${currentBookingItem.name}!`);
+    bookingModal.style.display = "none";
+
+    inputName.value = "";
+    inputGuests.value = 1;
+    inputCheckin.value = "";
+    inputCheckout.value = "";
+});
+
+// Add booking to table
+function addBookingToTable(booking){
+    const tbody = document.getElementById("reservation-tbody");
+    const row = document.createElement("tr");
+    row.innerHTML = `
+        <td>${booking.id}</td>
+        <td>${booking.name}</td>
+        <td>${booking.type}</td>
+        <td>${booking.guests}</td>
+        <td>${booking.dates}</td>
+        <td class="status-cell"><span class="badge confirmed">${booking.status}</span></td>
+        <td>
+            <button class="modify-btn" data-id="${booking.id}">Modify</button>
+            <button class="cancel-btn" data-id="${booking.id}">Cancel</button>
+        </td>
+    `;
+    tbody.appendChild(row);
+    attachRowEvents(row);
+    updateStats();
+}
+
+// Row events
+function attachRowEvents(row){
+    const cancelBtn = row.querySelector(".cancel-btn");
+    const statusCell = row.querySelector(".status-cell span");
+    cancelBtn.addEventListener("click", () => {
+        if(confirm("Cancel this booking?")){
+            const id = cancelBtn.dataset.id;
+            const booking = bookings.find(b => b.id == id);
+            if(booking){
+                booking.status = "Cancelled";
+                statusCell.textContent = "Cancelled";
+                statusCell.className = "badge cancelled";
+                updateStats();
+            }
+        }
+    });
+}
+
+// Update stats
+function updateStats(){
+    const upcoming = bookings.length;
+    const confirmed = bookings.filter(b => b.status === "Confirmed").length;
+    const pending = bookings.filter(b => b.status === "Pending").length;
+    const totalSpent = bookings.filter(b => b.status === "Confirmed").reduce((sum,b) => sum + Number(b.price),0);
+    document.getElementById("count-upcoming").textContent = upcoming;
+    document.getElementById("count-confirmed").textContent = confirmed;
+    document.getElementById("count-pending").textContent = pending;
+    document.getElementById("total-spent").textContent = `$${totalSpent}`;
+
+    
+}
+</script>
+
+
+
 </body>
 </html>
