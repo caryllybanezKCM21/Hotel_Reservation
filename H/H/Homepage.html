@@ -1,366 +1,384 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NAROCAFRA HOTEL - </title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
-      background-size: cover;
-      color: #fff;
-    }
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.45);
-      z-index: 0;
-    }
-    header {
-      position: fixed;
-      width: 100%;
-      top: 0;
-      left: 0;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(0, 0, 0, 0.55);
-      backdrop-filter: blur(4px);
-      z-index: 10;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-    nav a {
-      color: #fff;
-      text-decoration: none;
-      margin-left: 1.5rem;
-      font-weight: bold;
-      transition: 0.3s;
-      cursor: pointer;
-    }
-    nav a:hover {
-      color: #0b84c9;
-    }
-    section {
-      padding: 100px 2rem;
-      text-align: center;
-    }
-    .hero {
-      position: relative;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 0 2rem;
-    }
-    .hero h2 {
-      font-size: 3rem;
-      margin: 0 0 1rem 0;
-    }
-    .hero p {
-      font-size: 1.2rem;
-      max-width: 600px;
-      margin-bottom: 2rem;
-    }
-    .hero a {
-      padding: 0.8rem 2rem;
-      background: #0b84c9;
-      color: #fff;
-      border-radius: 10px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      text-decoration: none;
-      transition: 0.3s;
-    }
-    .hero a:hover {
-      background: #096aa2;
-    }
-    .deals-section {
-      background: rgba(0, 0, 0, 0.55);
-      border-radius: 10px;
-      padding: 2rem;
-      max-width: 1200px;
-      margin: 2rem auto;
-      text-align: center;
-      opacity: 0;
-      transform: translateY(50px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-    .deals-section.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .deals-section h3 {
-      color: #0b84c9;
-      margin-bottom: 1rem;
-      font-size: 2rem;
-    }
-    .deals-section p {
-      color: #fff;
-      margin-bottom: 2rem;
-      font-size: 1.1rem;
-    }
-    .deals {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      justify-content: center;
-    }
-    .deal-card {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      padding: 1rem;
-      width: 300px;
-      text-align: left;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-      transition: transform 0.3s;
-    }
-    .deal-card:hover {
-      transform: translateY(-5px);
-    }
-    .deal-card img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-      border-radius: 8px;
-      margin-bottom: 1rem;
-    }
-    .deal-card h4 {
-      color: #0b84c9;
-      margin: 0 0 0.5rem 0;
-      font-size: 1.2rem;
-    }
-    .deal-card .location {
-      color: #ccc;
-      font-size: 0.9rem;
-      margin-bottom: 0.5rem;
-    }
-    .deal-card .rating {
-      color: #ffd700;
-      font-size: 0.9rem;
-      margin-bottom: 0.5rem;
-    }
-    .deal-card .price {
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: #fff;
-      margin-bottom: 1rem;
-    }
-    .deal-card a {
-      padding: 0.5rem 1rem;
-      background: #0b84c9;
-      color: #fff;
-      border-radius: 5px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: 0.3s;
-    }
-    .deal-card a:hover {
-      background: #096aa2;
-    }
-    .content-section {
-      display: none;
-      background: rgba(0,0,0,0.55);
-      border-radius: 10px;
-      padding: 2rem;
-      max-width: 800px;
-      margin: 2rem auto;
-      text-align: left;
-    }
-    .content-section h3 {
-      color: #0b84c9;
-      margin-top: 0;
-    }
-    .content-section p {
-      color: #fff;
-      line-height: 1.6;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NAROCAFRA HOTEL - Guest Panel</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+:root{
+  --blue:#0b84c9;
+  --muted:#f3f6fb;
+  --card-bg:#ffffff;
+  --success:#28a745;
+  --danger:#dc3545;
+  --accent:#0b84c9;
+  --text:#263238;
+}
+*{box-sizing:border-box;}
+body { font-family:"Segoe UI", Roboto, Arial, sans-serif; margin:0; background:var(--muted); display:flex; min-height:100vh; color:var(--text);}
+nav { width:240px; background:var(--card-bg); padding:1.25rem; box-shadow:2px 0 10px rgba(0,0,0,0.06); display:flex; flex-direction:column; gap:0.5rem;}
+.brand { font-weight:700; color:var(--accent); font-size:1.05rem; margin-bottom:0.75rem;}
+nav ul{list-style:none; padding:0;margin:0;}
+nav li{margin-bottom:0.75rem;}
+.nav-btn { width:100%; display:flex; align-items:center; padding:0.55rem 0.9rem; border-radius:8px; border:none; background:transparent; cursor:pointer; font-size:0.98rem; color:#1f2d35; transition: all .18s ease;}
+.nav-btn i{margin-right:0.5rem;width:20px;}
+.nav-btn:hover{background:rgba(11,132,201,0.12); color:var(--accent);}
+.nav-btn.active{background:var(--accent); color:#fff;}
+.logout { margin-top:auto; background:var(--danger); color:white; border:none; padding:0.6rem 0.8rem; border-radius:8px; cursor:pointer; width:100%;}
+.logout:hover{opacity:0.95;}
+main{flex:1; padding:26px 32px; overflow:auto;}
+header{display:flex; justify-content:space-between; align-items:center; gap:1rem; margin-bottom:18px;}
+header h1{margin:0;color:var(--accent); font-size:1.75rem;font-weight:700;}
+.stats{display:flex;gap:12px;margin-bottom:18px;flex-wrap:wrap;}
+.stat-card{background:var(--card-bg);padding:12px 16px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);min-width:150px;display:flex;align-items:center;gap:10px; cursor:pointer; transition: transform 0.2s;}
+.stat-card:hover { transform: scale(1.05); }
+.stat-icon{font-size:1.5rem;color:var(--accent);}
+.stat-content{flex:1;}
+.stat-title{font-size:0.85rem;color:#6b7a83;margin-bottom:6px;}
+.stat-value{font-size:1.25rem;font-weight:700;color:#1f2d35;}
+.section-title{color:var(--accent);margin:0 0 12px 0;font-size:1.3rem;}
+p.lead{margin:0 0 12px 0;color:#48545a;}
+.table-container{background:transparent; margin-top:12px;}
+table{width:100%;border-collapse:collapse;background:var(--card-bg);box-shadow:0 2px 8px rgba(0,0,0,0.06);border-radius:6px;overflow:hidden;}
+thead tr{background:#fbfcfd;}
+th, td{padding:14px 18px;border-bottom:1px solid #eef1f3;text-align:left;font-size:0.95rem;}
+th{color:#122127;font-weight:700;font-size:0.98rem;border-bottom:2px solid #e9edf0;}
+tbody tr:hover{background:#fafcfe;}
+.modify-btn{background:var(--success);color:white;border:none;padding:8px 12px;border-radius:6px;cursor:pointer;margin-right:8px;font-weight:600;}
+.modify-btn:hover{filter:brightness(.95);}
+.cancel-btn{background:var(--danger);color:white;border:none;padding:8px 12px;border-radius:6px;cursor:pointer;font-weight:600;}
+.cancel-btn:hover{filter:brightness(.95);}
+.room-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:16px; margin-top:16px;}
+.room-card{background:var(--card-bg); border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.06); overflow:hidden; cursor:pointer; transition: transform 0.2s;}
+.room-card:hover { transform: scale(1.05); }
+.room-card img{width:100%; height:160px; object-fit:cover;}
+.room-card-content{padding:12px;}
+.room-card-content h3{margin:0 0 6px; font-size:1.1rem; color:var(--accent);}
+.room-card-content p{margin:0 0 8px; color:#48545a;}
+.room-card-content button{background:var(--accent); color:white; border:none; padding:8px 12px; border-radius:6px; cursor:pointer;}
+.room-card-content button:hover{filter:brightness(.95);}
+.badge{padding:6px 10px;border-radius:16px;font-size:0.85rem;font-weight:600;display:inline-block;}
+.badge.confirmed{background:rgba(11,132,201,0.12); color:var(--accent);}
+.badge.pending{background:rgba(255,193,7,0.12); color:#f59e0b;}
+.badge.cancelled{background:rgba(220,53,69,0.08); color:var(--danger);}
+.modal-backdrop{position:fixed; inset:0; background:rgba(0,0,0,0.35); display:none; align-items:center; justify-content:center; z-index:2000;}
+.modal{background:white; padding:20px; border-radius:10px; min-width:320px; box-shadow:0 6px 20px rgba(0,0,0,0.2);}
+.modal h3{margin:0 0 12px 0;}
+.modal img{width:100%; height:150px; object-fit:cover; border-radius:6px; margin-bottom:10px;}
+.modal label{display:block; margin:6px 0 4px;}
+.modal input{width:100%; padding:8px; border-radius:6px; border:1px solid #d6dde3; margin-bottom:10px;}
+.modal button{padding:8px 10px; border-radius:8px; border:none; cursor:pointer;}
+.btn-secondary{background:#eef2f6;}
+.btn-primary{background:var(--accent); color:#fff;}
+#search-bar,#search-services{padding:8px; width:100%; max-width:400px; border-radius:6px; border:1px solid #d6dde3; margin-bottom:12px;}
+@media (max-width:900px){nav{display:none;} main{padding:18px;} .stats{flex-direction:column;}}
+</style>
 </head>
 <body>
-  <div class="overlay"></div>
 
-  <header>
-    <h1>NAROCAFRA HOTEL</h1>
-    <nav>
-      <a id="homeLink">Home</a>
-      <a href=>gin</a>
-    </nav>
-  </header>
+<nav>
+<div class="brand">NAROCAFRA HOTEL — Guest</div>
+<ul>
+<li><button class="nav-btn active" data-section="my-reservations"><i class="fas fa-calendar-check"></i> My Reservations</button></li>
+<li><button class="nav-btn" data-section="book-room"><i class="fas fa-bed"></i> Book a Room</button></li>
+<li><button class="nav-btn" data-section="services"><i class="fas fa-spa"></i> Services</button></li>
+<li><button class="nav-btn" data-section="profile"><i class="fas fa-user"></i> Profile</button></li>
+</ul>
+<button class="logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+</nav>
 
-  <section class="hero" id="hero">
-    <h2>Experience Luxury & Comfort</h2>
-    <p>Welcome to Naracara Hotel — where elegance meets relaxation. Book your stay and enjoy world-class hospitality.</p>
-    <a href="login.html">Get Started</a>
-  </section>
+<main>
+<header>
+<h1>Guest Dashboard - Narocafra Hotel</h1>
+<div style="color:#6c7a82; font-size:0.95rem; margin-top:4px;">Manage your bookings, explore services, and update your profile</div>
+</header>
 
-  <!-- Hotel Deals Section - Visible on Scroll -->
-  <section class="deals-section" id="dealsSection">
-    <h3>Hotel Deals Right Now</h3>
-    <p>Discover unbeatable deals on top hotels in the Philippines. Scroll down to explore and book instantly!</p>
-    <div class="deals">
-      <div class="deal-card">
-        <img src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&w=400&q=80" alt="Shangri-La Makati">
-        <h4>Shangri-La Makati</h4>
-        <div class="location">Makati, Metro Manila</div>
-        <div class="rating">★★★★★ (4.8/5)</div>
-        <div class="price">From ₱12,500 per night</div>
-        <a href="#">Check Deal</a>
-      </div>
-      <div class="deal-card">
-        <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=400&q=80" alt="Red Planet Makati">
-        <h4>Red Planet Makati</h4>
-        <div class="location">Makati, Metro Manila</div>
-        <div class="rating">★★★★☆ (4.2/5)</div>
-        <div class="price">From ₱3,200 per night</div>
-        <a href="#">Check Deal</a>
-      </div>
-      <div class="deal-card">
-        <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=400&q=80" alt="The Fort Bonifacio">
-        <h4>The Fort Bonifacio</h4>
-        <div class="location">Taguig, Metro Manila</div>
-        <div class="rating">★★★★★ (4.7/5)</div>
-        <div class="price">From ₱8,900 per night</div>
-        <a href="#">Check Deal</a>
-      </div>
-      <div class="deal-card">
-        <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=400&q=80" alt="Sofitel Philippine Plaza">
-        <h4>Sofitel Philippine Plaza</h4>
-        <div class="location">Pasay, Metro Manila</div>
-        <div class="rating">★★★★☆ (4.5/5)</div>
-        <div class="price">From ₱10,200 per night</div>
-        <a href="#">Check Deal</a>
-      </div>
-      <div class="deal-card">
-        <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=400&q=80" alt="Naracara Hotel Special">
-        <h4>Naracara Hotel - Exclusive Deal</h4>
-        <div class="location">Manila, Philippines</div>
-        <div class="rating">★★★★★ (4.9/5)</div>
-        <div class="price">From ₱5,500 per night</div>
-        <a href="#">Check Deal</a>
-      </div>
-      <div class="deal-card">
-        <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=400&q=80" alt="Cebu City Marriott">
-        <h4>Cebu City Marriott</h4>
-        <div class="location">Cebu City, Cebu</div>
-        <div class="rating">★★★★☆ (4.3/5)</div>
-        <div class="price">From ₱7,800 per night</div>
-        <a href="#">Check Deal</a>
-      </div>
-    </div>
-  </section>
+<div class="stats">
+<div class="stat-card" onclick="alert('Upcoming bookings: View details in My Reservations.')"><i class="fas fa-calendar-alt stat-icon"></i><div class="stat-content"><div class="stat-title">Upcoming Bookings</div><div id="count-upcoming" class="stat-value">0</div></div></div>
+<div class="stat-card" onclick="alert('Confirmed bookings: View details in My Reservations.')"><i class="fas fa-check-circle stat-icon"></i><div class="stat-content"><div class="stat-title">Confirmed</div><div id="count-confirmed" class="stat-value">0</div></div></div>
+<div class="stat-card" onclick="alert('Pending bookings: View details in My Reservations.')"><i class="fas fa-clock stat-icon"></i><div class="stat-content"><div class="stat-title">Pending</div><div id="count-pending" class="stat-value">0</div></div></div>
+<div class="stat-card" onclick="alert('Total spent: Based on your bookings.')"><i class="fas fa-dollar-sign stat-icon"></i><div class="stat-content"><div class="stat-title">Total Spent</div><div id="total-spent" class="stat-value">$0</div></div></div>
+</div>
 
-  <!-- ⭐ INSERTED FOOTER HERE ⭐ -->
-  <footer style="
-    background: rgba(0, 6, 52, 0.85);
-    padding: 3rem 2rem;
-    color: #fff;
-    margin-top: 4rem;
-    text-align: left;
-  ">
+<section id="my-reservations">
+<h2 class="section-title">My Reservations</h2>
+<p class="lead">View and manage your bookings.</p>
+<div class="table-container">
+<table id="reservation-table">
+<thead>
+<tr>
+<th>Booking ID</th>
+<th>Name</th>
+<th>Type</th>
+<th>Guests</th>
+<th>Dates</th>
+<th>Status</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody id="reservation-tbody"></tbody>
+</table>
+</div>
+</section>
 
-    <div style="max-width: 1200px; margin: auto; display: flex; flex-wrap: wrap; gap: 3rem;">
+<section id="book-room" style="display:none">
+<h2 class="section-title">Book a Room</h2>
+<input type="text" id="search-bar" placeholder="Search rooms...">
+<div class="room-grid" id="room-grid">
+<!-- Rooms -->
+<div class="room-card">
+<img src="https://via.placeholder.com/400x200?text=Standard+Room" alt="Standard Room">
+<div class="room-card-content">
+<h3>Standard Room</h3>
+<p>Price: $80/night</p>
+<button class="book-now-btn" data-type="room" data-name="Standard Room" data-price="80" data-img="https://via.placeholder.com/400x200?text=Standard+Room">Book Now</button>
+</div>
+</div>
+<div class="room-card">
+<img src="https://via.placeholder.com/400x200?text=Deluxe+Room" alt="Deluxe Room">
+<div class="room-card-content">
+<h3>Deluxe Room</h3>
+<p>Price: $120/night</p>
+<button class="book-now-btn" data-type="room" data-name="Deluxe Room" data-price="120" data-img="https://via.placeholder.com/400x200?text=Deluxe+Room">Book Now</button>
+</div>
+</div>
+<div class="room-card">
+<img src="https://via.placeholder.com/400x200?text=Executive+Suite" alt="Executive Suite">
+<div class="room-card-content">
+<h3>Executive Suite</h3>
+<p>Price: $200/night</p>
+<button class="book-now-btn" data-type="room" data-name="Executive Suite" data-price="200" data-img="https://via.placeholder.com/400x200?text=Executive+Suite">Book Now</button>
+</div>
+</div>
+</div>
+</section>
 
-      <!-- Country Selector -->
-      <div style="flex: 1 1 200px;">
-        <h3 style="margin-bottom: 1rem; font-size: 1.2rem;">🌍 Narocafra Hotel </h3>
-      </div>
+<section id="services" style="display:none">
+<h2 class="section-title">Services & Amenities</h2>
+<input type="text" id="search-services" placeholder="Search services...">
+<div class="room-grid" id="services-grid">
+<!-- Services -->
+<div class="room-card">
+<img src="https://via.placeholder.com/400x200?text=Spa+%26+Wellness" alt="Spa & Wellness">
+<div class="room-card-content">
+<h3>Spa & Wellness</h3>
+<p>Price: $50/session</p>
+<button class="book-now-btn" data-type="service" data-name="Spa & Wellness" data-price="50" data-img="https://via.placeholder.com/400x200?text=Spa+%26+Wellness">Book Now</button>
+</div>
+</div>
+<div class="room-card">
+<img src="https://via.placeholder.com/400x200?text=Event+Hall" alt="Event Hall">
+<div class="room-card-content">
+<h3>Event Hall</h3>
+<p>Price: $300/day</p>
+<button class="book-now-btn" data-type="service" data-name="Event Hall" data-price="300" data-img="https://via.placeholder.com/400x200?text=Event+Hall">Book Now</button>
+</div>
+</div>
+<div class="room-card">
+<img src="https://via.placeholder.com/400x200?text=Gym+Access" alt="Gym Access">
+<div class="room-card-content">
+<h3>Gym Access</h3>
+<p>Price: $20/day</p>
+<button class="book-now-btn" data-type="service" data-name="Gym Access" data-price="20" data-img="https://via.placeholder.com/400x200?text=Gym+Access">Book Now</button>
+</div>
+</div>
+<div class="room-card">
+<img src="https://via.placeholder.com/400x200?text=Dining+Package" alt="Dining Package">
+<div class="room-card-content">
+<h3>Dining & Restaurant</h3>
+<p>Price: $40/meal</p>
+<button class="book-now-btn" data-type="service" data-name="Dining & Restaurant" data-price="40" data-img="https://via.placeholder.com/400x200?text=Dining+Package">Book Now</button>
+</div>
+</div>
+<div class="room-card">
+<img src="https://via.placeholder.com/400x200?text=Lounge+Bar" alt="Lounge & Bar">
+<div class="room-card-content">
+<h3>Lounge & Bar</h3>
+<p>Price: $30/session</p>
+<button class="book-now-btn" data-type="service" data-name="Lounge & Bar" data-price="30" data-img="https://via.placeholder.com/400x200?text=Lounge+Bar">Book Now</button>
+</div>
+</div>
+</div>
+</section>
 
-      <!-- Company Section -->
-      <div style="flex: 1 1 200px;">
-        <h4 style="color:#0b84c9;">Company</h4>
-        <p>About</p>
-        <p>Jobs</p>
-        <p>Press</p>
-        <p>Investor Relations</p>
-      </div>
+<section id="profile" style="display:none">
+<h2 class="section-title">Profile</h2>
+<p class="lead">Update your information.</p>
+<p>Profile editing not implemented (demo). Click back to other sections!</p>
+</section>
 
-      <!-- Info Section -->
-      <div style="flex: 1 1 200px;">
-        <h4 style="color:#0b84c9;">Information</h4>
-        <p>Help</p>
-        <p>Terms & Conditions</p>
-        <p>Privacy Notice</p>
-        <p>Cybersecurity</p>
-      </div>
+</main>
 
-      <!-- Newsletter -->
-      <div style="flex: 2 1 300px;">
-        <h3 style="margin-bottom: .5rem;">Get exclusive inspiration for your next stay — subscribe to our newsletter.</h3>
+<!-- Booking Modal -->
+<div id="booking-modal" class="modal-backdrop" aria-hidden="true">
+<div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+<img id="modal-img" src="" alt="Item Image">
+<h3 id="modal-title">Book Now</h3>
+<p id="modal-price" style="margin-bottom:10px; color:#48545a;"></p>
+<label for="input-name">Full Name</label>
+<input type="text" id="input-name" placeholder="Your Name" required>
+<label for="input-guests">Number of Guests</label>
+<input type="number" id="input-guests" min="1" max="10" value="1" required>
+<label for="input-checkin">Check-in Date</label>
+<input type="date" id="input-checkin" required>
+<label for="input-checkout">Check-out Date</label>
+<input type="date" id="input-checkout" required>
+<div style="display:flex; justify-content:flex-end; gap:10px; margin-top:8px;">
+<button class="btn-secondary" id="modal-cancel">Cancel</button>
+<button class="btn-primary" id="modal-book">Book Now</button>
+</div>
+</div>
+</div>
 
-        <div style="display:flex; gap:.5rem; margin-top:1rem;">
-          <input type="email" placeholder="Email address" 
-                style="padding:.7rem; flex:1; border-radius:5px; border:none;">
-          <button style="
-            background:#0b84c9;
-            color:#fff;
-            border:none;
-            padding:.7rem 1.2rem;
-            border-radius:6px;
-            cursor:pointer;
-            font-weight:bold;
-          ">Subscribe</button>
-        </div>
-      </div>
+<script>
+let bookings = [];
+let bookingCounter = 1001;
 
-    </div>
-
-    <p style="margin-top:2rem; text-align:center; font-size:.9rem; opacity:0.7;">
-      © 2025 Narocafra Hotel — All Rights Reserved.
-    </p>
-
-  </footer>
-  <!-- END FOOTER -->
-
-  <!-- Content inside Home -->
-  <div class="content-section" id="homeContent">
-    <section>
-      <h3>About Us</h3>
-      <p>Naracara Hotel has been serving guests with exceptional comfort and luxury for over a decade. Our mission is to provide an unforgettable stay with personalized services, elegant accommodations, and world-class amenities.</p>
-    </section>
-    <section>
-      <h3>Contact Us</h3>
-      <p>Have questions or want to make a booking? Reach out to us:</p>
-      <p>Email: info@naracarahotel.com</p>
-      <p>Phone: +63 912 345 6789</p>
-      <p>Address: 123 Luxury Ave, Manila, Philippines</p>
-    </section>
-  </div>
-
-  <script>
-    const homeLink = document.getElementById('homeLink');
-    const homeContent = document.getElementById('homeContent');
-    const dealsSection = document.getElementById('dealsSection');
-
-    homeLink.addEventListener('click', () => {
-      // toggle visibility
-      if(homeContent.style.display === 'block') {
-        homeContent.style.display = 'none';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        homeContent.style.display = 'block';
-        homeContent.scrollIntoView({ behavior: 'smooth' });
-      }
+// Navigation
+const navButtons = document.querySelectorAll(".nav-btn");
+const sections = document.querySelectorAll("main section");
+navButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+        navButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const target = btn.dataset.section;
+        sections.forEach(s => s.style.display = s.id === target ? "block" : "none");
     });
+});
 
-    // Scroll to show deals section
-    window.addEventListener('scroll', () => {
-      const sectionTop = dealsSection.offsetTop;
-      const scrollTop = window.pageYOffset;
-      const windowHeight = window.innerHeight;
+// Logout
+function logout() {
+    if (confirm("Are you sure you want to log out?")) alert("Logged out (demo).");
+}
 
-      if (scrollTop > sectionTop - windowHeight + 100) {
-        dealsSection.classList.add('visible');
-      }
+// Booking Modal
+const modal = document.getElementById("booking-modal");
+const modalImg = document.getElementById("modal-img");
+const modalTitle = document.getElementById("modal-title");
+const modalPrice = document.getElementById("modal-price");
+const inputName = document.getElementById("input-name");
+const inputGuests = document.getElementById("input-guests");
+const inputCheckin = document.getElementById("input-checkin");
+const inputCheckout = document.getElementById("input-checkout");
+let currentBookingData = null;
+
+// Open Modal
+document.querySelectorAll(".book-now-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+        currentBookingData = btn.dataset;
+        modalImg.src = currentBookingData.img;
+        modalTitle.textContent = currentBookingData.name;
+        modalPrice.textContent = "$" + current
+
     });
-  </script>
+});
+
+// Close modal
+modalCancel.addEventListener("click", () => bookingModal.style.display = "none");
+
+// Confirm booking with validation
+modalBook.addEventListener("click", () => {
+    const name = inputName.value.trim();
+    const guests = parseInt(inputGuests.value);
+    const checkin = inputCheckin.value;
+    const checkout = inputCheckout.value;
+    const today = new Date().toISOString().split('T')[0];
+
+    if(name.length < 3){
+        alert("Guest name must be at least 3 characters.");
+        return;
+    }
+    if(isNaN(guests) || guests < 1 || guests > 10){
+        alert("Number of guests must be between 1 and 10.");
+        return;
+    }
+    if(!checkin || checkin < today){
+        alert("Check-in date cannot be in the past.");
+        return;
+    }
+    if(!checkout || checkout <= checkin){
+        alert("Check-out must be after check-in.");
+        return;
+    }
+
+    const booking = {
+        id: bookingCounter++,
+        name,
+        type: currentBookingItem.type,
+        guests,
+        dates: `${checkin} → ${checkout}`,
+        status: "Confirmed",
+        price: currentBookingItem.price
+    };
+
+    bookings.push(booking);
+    addBookingToTable(booking);
+
+    alert(`Booking successful for ${currentBookingItem.name}!`);
+    bookingModal.style.display = "none";
+
+    inputName.value = "";
+    inputGuests.value = 1;
+    inputCheckin.value = "";
+    inputCheckout.value = "";
+});
+
+// Add booking to table
+function addBookingToTable(booking){
+    const tbody = document.getElementById("reservation-tbody");
+    const row = document.createElement("tr");
+    row.innerHTML = `
+        <td>${booking.id}</td>
+        <td>${booking.name}</td>
+        <td>${booking.type}</td>
+        <td>${booking.guests}</td>
+        <td>${booking.dates}</td>
+        <td class="status-cell"><span class="badge confirmed">${booking.status}</span></td>
+        <td>
+            <button class="modify-btn" data-id="${booking.id}">Modify</button>
+            <button class="cancel-btn" data-id="${booking.id}">Cancel</button>
+        </td>
+    `;
+    tbody.appendChild(row);
+    attachRowEvents(row);
+    updateStats();
+}
+
+// Row events
+function attachRowEvents(row){
+    const cancelBtn = row.querySelector(".cancel-btn");
+    const statusCell = row.querySelector(".status-cell span");
+    cancelBtn.addEventListener("click", () => {
+        if(confirm("Cancel this booking?")){
+            const id = cancelBtn.dataset.id;
+            const booking = bookings.find(b => b.id == id);
+            if(booking){
+                booking.status = "Cancelled";
+                statusCell.textContent = "Cancelled";
+                statusCell.className = "badge cancelled";
+                updateStats();
+            }
+        }
+    });
+}
+
+// Update stats
+function updateStats(){
+    const upcoming = bookings.length;
+    const confirmed = bookings.filter(b => b.status === "Confirmed").length;
+    const pending = bookings.filter(b => b.status === "Pending").length;
+    const totalSpent = bookings.filter(b => b.status === "Confirmed").reduce((sum,b) => sum + Number(b.price),0);
+    document.getElementById("count-upcoming").textContent = upcoming;
+    document.getElementById("count-confirmed").textContent = confirmed;
+    document.getElementById("count-pending").textContent = pending;
+    document.getElementById("total-spent").textContent = `$${totalSpent}`;
+
+    
+}
+</script>
+
+
+
 </body>
 </html>
