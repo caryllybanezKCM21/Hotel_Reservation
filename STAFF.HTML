@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NAROCAFRA HOTEL — Staff Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+:root{
+  --gold:#d4af37; --dark-gold:#b28f24; --bg:#f7f3ef; --card-bg:#fffaf0;
+  --success:#28a745; --danger:#dc3545; --text:#2b2b2b; --muted:#7a7a7a;
+}
+*{box-sizing:border-box;}
+html,body{height:100%;margin:0;font-family:"Georgia","Times New Roman",serif;}
+body{background:linear-gradient(180deg,#faf7f3 0%,#f1ece5 100%);color:var(--text);display:flex;min-height:100vh;}
+
+/* Sidebar */
+nav{width:260px;background:var(--card-bg);padding:1.25rem;box-shadow:4px 0 20px rgba(0,0,0,0.08);display:flex;flex-direction:column;gap:0.5rem;}
+.brand{font-weight:900;color:var(--gold);font-size:1.15rem;margin-bottom:0.75rem;letter-spacing:1px;}
+nav ul{list-style:none;padding:0;margin:0;}
+nav li{margin-bottom:0.6rem;}
+.nav-btn{width:100%;display:flex;align-items:center;padding:0.55rem 0.9rem;border-radius:12px;border:none;background:transparent;cursor:pointer;font-size:0.98rem;color:#3a3a3a;transition:all .18s ease;font-weight:700;}
+.nav-btn i{margin-right:0.6rem;width:20px;text-align:center;}
+.nav-btn:hover{background:rgba(212,175,55,0.12);color:var(--gold);}
+.nav-btn.active{background:var(--gold);color:#fff;box-shadow:0 4px 12px rgba(212,175,55,0.22);}
+.logout{margin-top:auto;background:var(--danger);color:white;border:none;padding:0.65rem 0.8rem;border-radius:12px;cursor:pointer;width:100%;font-weight:800;}
+.logout:hover{opacity:0.95;}
+
+/* Main */
+main{flex:1;padding:26px 32px;overflow:auto;}
+header{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:12px;}
+header h1{margin:0;color:var(--gold);font-size:1.9rem;font-weight:900;}
+.header-meta{color:var(--muted);font-size:0.95rem;}
+
+/* Profile / cards */
+.profile-container{padding:20px;display:flex;flex-direction:column;gap:20px;}
+.profile-grid{display:grid;grid-template-columns:1fr 2fr;gap:20px;}
+.profile-card{background:var(--card-bg);padding:25px;border-radius:15px;box-shadow:0 3px 10px rgba(0,0,0,0.15);text-align:center;}
+.profile-card img{width:150px;height:150px;border-radius:50%;border:5px solid var(--gold);object-fit:cover;}
+.details-card{background:var(--card-bg);padding:25px;border-radius:15px;box-shadow:0 3px 10px rgba(0,0,0,0.15);}
+.btn-row{margin-top:20px;display:flex;gap:10px;}
+.btn-save,.btn-reset{padding:10px 20px;border-radius:8px;cursor:pointer;border:none;}
+.btn-save{background:var(--gold);color:white;}
+.btn-reset{background:#ccc;color:#222;}
+.stats-card{background:var(--card-bg);padding:20px;border-radius:15px;box-shadow:0 3px 10px rgba(0,0,0,0.15);display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.stat-box{background:#fafafa;padding:15px;border-radius:10px;text-align:center;border:2px solid var(--gold);}
+
+/* Tables and badges */
+.table-container{background:transparent;margin-top:6px;}
+table{width:100%;border-collapse:collapse;background:var(--card-bg);box-shadow:0 4px 18px rgba(0,0,0,0.06);border-radius:8px;overflow:hidden;}
+thead tr{background:#fff8e6;}
+th,td{padding:12px 14px;border-bottom:1px solid #f0e6d2;text-align:left;font-size:0.95rem;}
+th{color:var(--gold);font-weight:800;}
+tbody tr:hover{background:#fffaf2;}
+.badge{padding:6px 10px;border-radius:20px;font-size:0.82rem;font-weight:800;display:inline-block;}
+.badge.confirmed{background:rgba(40,167,69,0.15);color:var(--success);}
+.badge.pending{background:rgba(255,193,7,0.12);color:#b28f24;}
+.badge.cancelled{background:rgba(220,53,69,0.12);color:var(--danger);}
+.badge.checked-in{background:rgba(40,167,69,0.12);color:var(--success);}
+
+/* Glowy buttons */
+.glow-btn{
+  position:relative;
+  display:inline-block;
+  padding:8px 14px;
+  border-radius:8px;
+  font-weight:800;
+  color:#fff;
+  cursor:pointer;
+  transition:0.3s ease;
+}
+.glow-confirm{background:linear-gradient(45deg,#28a745,#198754);box-shadow:0 0 5px #28a745,0 0 15px #198754,0 0 30px #28a745;}
+.glow-confirm:hover{box-shadow:0 0 10px #28a745,0 0 20px #198754,0 0 30px #28a745,0 0 40px #28a745;}
+.glow-delete{background:linear-gradient(45deg,#dc3545,#b02a37);box-shadow:0 0 5px #dc3545,0 0 15px #b02a37,0 0 30px #dc3545;}
+.glow-delete:hover{box-shadow:0 0 10px #dc3545,0 0 20px #b02a37,0 0 30px #dc3545,0 0 40px #b02a37;}
+
+/* Dropdown */
+.confirm-dropdown{position:relative;display:inline-block;margin-right:6px;}
+.confirm-dropdown-content{display:none;position:absolute;background:#fff;border:1px solid #eee;border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,0.15);min-width:120px;z-index:50;}
+.confirm-dropdown-content button{width:100%;padding:8px 10px;border:none;background:transparent;text-align:left;cursor:pointer;font-weight:700;color:#333;}
+.confirm-dropdown-content button:hover{background:#e6f4ea;color:#28a745;}
+.confirm-dropdown.show .confirm-dropdown-content{display:block;}
+
+/* Modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.38);display:none;align-items:center;justify-content:center;z-index:9999;}
+.modal{background:var(--card-bg);padding:20px;border-radius:12px;min-width:340px;max-width:520px;box-shadow:0 10px 30px rgba(0,0,0,0.2);}
+.modal h3{margin-top:0;color:var(--gold);}
+.modal input,.modal select{width:100%;padding:10px;margin-bottom:10px;border-radius:8px;border:1px solid #e6dcc0;}
+.modal .actions{display:flex;justify-content:flex-end;gap:10px;}
+.toast{position:fixed;right:20px;bottom:20px;background:#111;color:#fff;padding:12px 16px;border-radius:8px;display:none;}
+
+@media(max-width:900px){nav{display:none;}main{padding:16px;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">NAROCAFRA HOTEL Staff</div>
+  <ul>
+    <li><button class="nav-btn" data-section="profile"><i class="fas fa-user"></i> Staff Profile</button></li>
+    <li><button class="nav-btn active" data-section="reservations"><i class="fas fa-calendar-check"></i> Manage Reservations</button></li>
+    <li><button class="nav-btn" data-section="reports"><i class="fas fa-chart-bar"></i> Generate Reports</button></li>
+    <li><button class="nav-btn" data-section="users"><i class="fas fa-users"></i> Staff Management</button></li>
+  </ul>
+  <button class="logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+</nav>
+
+<main>
+<header>
+  <div>
+    <h1 id="staff-welcome">Staff Dashboard</h1>
+    <div class="header-meta">Manage system settings and hotel operations.</div>
+  </div>
+  <div style="text-align:right;">
+    <div id="staff-email" style="color:var(--muted);font-weight:700"></div>
+    <div id="member-since" style="color:var(--muted);font-size:0.9rem"></div>
+  </div>
+</header>
+
+<section id="reservations">
+  <h2 style="color:var(--gold);margin-bottom:12px;">Manage Reservations</h2>
+  <div class="table-container">
+    <table id="reservation-table">
+      <thead><tr><th>ID</th><th>Guest</th><th>Room/Service</th><th>Check-in</th><th>Check-out</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody id="reservation-tbody"></tbody>
+    </table>
+  </div>
+</section>
+
+<section id="profile" style="display:none;">
+  <div class="profile-container">
+    <div class="profile-grid">
+      <div class="profile-card">
+        <img id="staff-avatar" src="https://via.placeholder.com/160" alt="avatar">
+        <h2 id="staff-name">Staff Name</h2>
+        <p id="staff-role">Staff</p>
+        <label class="upload-btn">Upload Photo<input type="file" id="profile-file" hidden></label>
+      </div>
+      <div class="details-card">
+        <h3>Profile Details</h3>
+        <label>Full Name</label><input id="profile-name">
+        <label>Email</label><input id="profile-email">
+        <div class="btn-row"><button class="btn-reset" id="resetPasswordBtn">Reset Password</button><button class="btn-save" id="saveProfileBtn">Save Profile</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="users" style="display:none;">
+  <h2 style="color:var(--gold)">User Management</h2>
+  <p style="color:var(--muted)">User management tools will appear here.</p>
+</section>
+
+<div id="toast" class="toast"></div>
+
+<script>
+// Bookings
+let bookings = JSON.parse(localStorage.getItem('allBookings')) || [
+  {id:'BKG31678', guest:'caryllybanez', name:'Standard Room', checkin:'2025-12-03', checkout:'2025-12-05', status:'confirmed', amount:2500},
+  {id:'BKG44856', guest:'ceska', name:'Dining Package', checkin:'2025-12-03', checkout:'2025-12-12', status:'cancelled', amount:0},
+  {id:'BKG05265', guest:'ceska', name:'Laundry Service', checkin:'2025-12-03', checkout:'2025-12-13', status:'confirmed', amount:450},
+];
+localStorage.setItem('allBookings', JSON.stringify(bookings));
+
+// Staff
+let loggedInStaff = JSON.parse(localStorage.getItem('activeStaff')) || {username:'caryllybanez', email:'staff@example.com', memberSince:'2024'};
+function loadStaff(){
+  document.getElementById('profile-name').value = loggedInStaff.username;
+  document.getElementById('profile-email').value = loggedInStaff.email;
+  document.getElementById('staff-name').textContent = loggedInStaff.username;
+  document.getElementById('staff-email').textContent = loggedInStaff.email;
+  document.getElementById('member-since').textContent = 'Member since ' + loggedInStaff.memberSince;
+}
+loadStaff();
+
+// Navigation
+document.querySelectorAll('.nav-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('main section').forEach(s=>s.style.display='none');
+    document.getElementById(btn.dataset.section).style.display='block';
+  });
+});
+
+// Profile Image
+document.getElementById('profile-file').addEventListener('change', e=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ()=>document.getElementById('staff-avatar').src = reader.result;
+  reader.readAsDataURL(file);
+});
+
+// Save profile
+document.getElementById('saveProfileBtn').addEventListener('click', ()=>{
+  loggedInStaff.username = document.getElementById('profile-name').value;
+  loggedInStaff.email = document.getElementById('profile-email').value;
+  localStorage.setItem('activeStaff', JSON.stringify(loggedInStaff));
+  loadStaff();
+  showToast('Profile saved!');
+});
+
+// Logout
+document.getElementById('logoutBtn').addEventListener('click', ()=>{
+  localStorage.removeItem('activeStaff');
+  window.location.href = '/login/';
+});
+
+// Toast
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.style.display='block';
+  setTimeout(()=>t.style.display='none', 2500);
+}
+
+// Render bookings
+function renderBookings(){
+  const tbody = document.getElementById('reservation-tbody');
+  tbody.innerHTML = '';
+  bookings.forEach(b=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${b.id}</td>
+      <td>${b.guest}</td>
+      <td>${b.name}</td>
+      <td>${b.checkin}</td>
+      <td>${b.checkout}</td>
+      <td><span class="badge ${b.status}">${b.status.replace('-', ' ')}</span></td>
+      <td>
+        <div class="confirm-dropdown">
+          <button class="glow-btn glow-confirm">Confirm</button>
+          <div class="confirm-dropdown-content">
+            <button data-status="confirmed">Confirmed</button>
+            <button data-status="pending">Pending</button>
+            <button data-status="cancelled">Cancelled</button>
+            <button data-status="checked-in">Checked-in</button>
+          </div>
+        </div>
+        <button class="glow-btn glow-delete" data-id="${b.id}">Delete</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+  attachDropdownEvents();
+  attachDeleteEvents();
+}
+
+// Dropdown functionality
+function attachDropdownEvents(){
+  document.querySelectorAll('.confirm-dropdown').forEach(dd=>{
+    const btn = dd.querySelector('.glow-btn');
+    const content = dd.querySelector('.confirm-dropdown-content');
+    btn.addEventListener('click', e=>{
+      dd.classList.toggle('show');
+      document.querySelectorAll('.confirm-dropdown').forEach(other=>{
+        if(other!==dd) other.classList.remove('show');
+      });
+    });
+    content.querySelectorAll('button').forEach(option=>{
+      option.addEventListener('click', ()=>{
+        const rowIndex = Array.from(dd.closest('tr').parentNode.children).indexOf(dd.closest('tr'));
+        bookings[rowIndex].status = option.dataset.status;
+        localStorage.setItem('allBookings', JSON.stringify(bookings));
+        renderBookings();
+        showToast(`Status updated to ${option.dataset.status.toUpperCase()}`);
+      });
+    });
+  });
+  window.addEventListener('click', e=>{
+    if(!e.target.closest('.confirm-dropdown')) document.querySelectorAll('.confirm-dropdown').forEach(dd=>dd.classList.remove('show'));
+  });
+}
+
+// Delete functionality
+function attachDeleteEvents(){
+  document.querySelectorAll('.glow-delete').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const id = btn.dataset.id;
+      bookings = bookings.filter(b=>b.id!==id);
+      localStorage.setItem('allBookings', JSON.stringify(bookings));
+      renderBookings();
+      showToast('Booking deleted!');
+    });
+  });
+}
+
+// Initial render
+renderBookings();
+</script>
+</body>
+</html>
