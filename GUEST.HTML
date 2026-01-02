@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NAROCAFRA HOTEL - Guest Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+:root{
+  --gold:#d4af37;
+  --dark-gold:#b28f24;
+  --bg:#f7f3ef;
+  --card-bg:#fffaf0;
+  --success:#28a745;
+  --danger:#dc3545;
+  --text:#2b2b2b;
+  --muted:#7a7a7a;
+}
+
+*{box-sizing:border-box;}
+html,body{height:100%;margin:0;font-family:"Georgia","Times New Roman",serif;}
+body{display:flex;min-height:100vh;background:linear-gradient(180deg,#faf7f3 0%,#f1ece5 100%);color:var(--text);}
+
+/* Sidebar */
+nav{
+  width:260px;
+  background:var(--card-bg);
+  padding:1.25rem;
+  display:flex;
+  flex-direction:column;
+  gap:0.5rem;
+  box-shadow:4px 0 20px rgba(0,0,0,0.08);
+}
+.brand{font-weight:900;color:var(--gold);font-size:1.15rem;margin-bottom:0.75rem;letter-spacing:1px;}
+nav ul{list-style:none;padding:0;margin:0;}
+nav li{margin-bottom:0.6rem;}
+.nav-btn{
+  width:100%;display:flex;align-items:center;padding:0.55rem 0.9rem;
+  border-radius:12px;border:none;background:transparent;
+  cursor:pointer;font-size:0.98rem;color:#3a3a3a;font-weight:700;
+  transition: all .18s ease;
+}
+.nav-btn i{margin-right:0.6rem;width:20px;text-align:center;}
+.nav-btn:hover{background:rgba(212,175,55,0.12);color:var(--gold);}
+.nav-btn.active{background:var(--gold);color:#fff;box-shadow:0 4px 12px rgba(212,175,55,0.22);}
+.logout{margin-top:auto;background:var(--danger);color:white;border:none;padding:0.65rem 0.8rem;border-radius:12px;cursor:pointer;font-weight:800;}
+.logout:hover{opacity:0.95;}
+
+/* Main */
+main{flex:1;padding:26px 32px;overflow:auto;}
+header{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:18px;}
+header h1{margin:0;color:var(--gold);font-size:1.9rem;font-weight:900;}
+.header-meta{color:var(--muted);font-size:0.95rem;}
+
+/* Profile Section */
+.profile-container{
+  background:var(--card-bg);
+  padding:20px;
+  border-radius:15px;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+.profile-grid{display:grid;grid-template-columns:1fr 2fr;gap:20px;}
+.profile-card, .details-card{
+  background:var(--card-bg);padding:25px;border-radius:15px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.15);
+}
+.profile-card{text-align:center;}
+.profile-card img{
+  width:150px;height:150px;border-radius:50%;
+  border:5px solid var(--gold);object-fit:cover;
+}
+.profile-card h2{margin-top:15px;font-size:22px;color:var(--text);}
+.profile-card p{font-size:14px;color:#555;}
+.upload-btn{margin-top:15px;display:inline-block;padding:10px 20px;background:var(--gold);color:white;border-radius:8px;cursor:pointer;}
+.details-card h3{margin-bottom:15px;font-size:20px;}
+.details-card label{display:block;font-size:14px;margin-top:10px;}
+.details-card input{width:100%;padding:10px;margin-top:5px;border:1px solid #ccc;border-radius:8px;}
+.btn-row{margin-top:20px;display:flex;gap:10px;}
+.btn-save, .btn-reset{padding:10px 20px;border-radius:8px;cursor:pointer;border:none;}
+.btn-save{background:var(--gold);color:white;}
+.btn-reset{background:#ccc;color:#222;}
+
+/* Stats */
+.stats-card{
+  background:var(--card-bg);padding:20px;border-radius:15px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.15);
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+}
+.stat-box{text-align:center;background:#fafafa;padding:15px;border-radius:10px;border:2px solid var(--gold);}
+.stat-box h3{margin:0;font-size:22px;font-weight:800;}
+.stat-box p{margin:5px 0 0;color:#555;}
+
+/* Table */
+table{width:100%;border-collapse:collapse;background:var(--card-bg);border-radius:12px;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,0.15);}
+th,td{padding:12px 15px;text-align:left;border-bottom:1px solid #ddd;font-size:14px;}
+th{background:var(--gold);color:white;}
+td button{padding:6px 12px;border:none;border-radius:6px;cursor:pointer;color:white;font-weight:600;}
+.btn-modify{background:var(--success);}
+.btn-cancel{background:var(--danger);}
+.btn-modify:hover,.btn-cancel:hover{opacity:0.9;}
+
+/* Cards */
+.content-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
+.content-card{background:var(--card-bg);border-radius:15px;box-shadow:0 3px 10px rgba(0,0,0,0.15);overflow:hidden;text-align:center;padding-bottom:15px;}
+.content-card img{width:100%;height:160px;object-fit:cover;}
+.content-card h4{margin:10px 0 5px;}
+.content-card p{font-size:14px;color:#555;padding:0 10px;}
+.card-buttons{display:flex;justify-content:center;gap:10px;margin-top:10px;}
+.card-buttons button{padding:8px 15px;border:none;border-radius:8px;cursor:pointer;color:white;font-weight:600;}
+.book-btn{background:var(--gold);}
+.book-btn:hover{opacity:0.9;}
+
+/* Modal */
+#booking-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);justify-content:center;align-items:center;z-index:999;}
+.modal-content{background:var(--card-bg);padding:20px;border-radius:12px;width:350px;}
+.modal-content h3{margin-top:0;}
+.modal-content label{display:block;margin-top:10px;}
+.modal-content input, .modal-content select, .modal-content textarea{width:100%;padding:8px;margin-top:5px;border-radius:6px;border:1px solid #ccc;}
+.modal-content button{margin-top:15px;padding:10px 15px;border:none;border-radius:8px;background:var(--gold);color:white;cursor:pointer;}
+.modal-content button.cancel-btn{background:#dc3545;margin-left:10px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">NAROCAFRA HOTEL — Guest</div>
+  <ul>
+    <li><button class="nav-btn active" data-section="profile"><i class="fas fa-user"></i> Profile</button></li>
+    <li><button class="nav-btn" data-section="reservations"><i class="fas fa-calendar-check"></i> My Reservations</button></li>
+    <li><button class="nav-btn" data-section="rooms"><i class="fas fa-bed"></i> Rooms</button></li>
+    <li><button class="nav-btn" data-section="services"><i class="fas fa-spa"></i> Services</button></li>
+  </ul>
+  <button class="logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+</nav>
+
+<main>
+<header>
+  <div>
+    <h1>Guest Dashboard</h1>
+    <div class="header-meta">Manage your reservations, rooms, services, and payments.</div>
+  </div>
+  <div style="text-align:right;">
+    <div id="guest-email" style="color:var(--muted);font-weight:700;"></div>
+    <div id="member-since" style="color:var(--muted);font-size:0.9rem;"></div>
+  </div>
+</header>
+
+<!-- Profile -->
+<section id="profile" class="profile-container">
+  <div class="profile-grid">
+    <div class="profile-card">
+      <img id="guest-avatar" src="https://via.placeholder.com/160">
+      <h2 id="guest-name">Guest Name</h2>
+      <p>Guest Role</p>
+      <label class="upload-btn">Upload Photo
+        <input type="file" id="profile-file" hidden>
+      </label>
+    </div>
+    <div class="details-card">
+      <h3>Profile Details</h3>
+      <label>Full Name</label>
+      <input id="profile-name">
+      <label>Email</label>
+      <input id="profile-email">
+      <div class="btn-row">
+        <button class="btn-reset" id="resetPasswordBtn">Reset Password</button>
+        <button class="btn-save" id="saveProfileBtn">Save Profile</button>
+      </div>
+    </div>
+  </div>
+  <div class="stats-card">
+    <div class="stat-box"><h3 id="upcoming-count">0</h3><p>Upcoming Reservations</p></div>
+    <div class="stat-box"><h3 id="pending-count">0</h3><p>Pending</p></div>
+    <div class="stat-box"><h3 id="total-count">0</h3><p>Total Visits</p></div>
+  </div>
+</section>
+
+<!-- Reservations -->
+<section id="reservations" style="display:none;">
+  <h2 style="color:var(--gold);margin-bottom:20px;">My Reservations</h2>
+  <tbody>
+  {% for guest in guests %}
+  <tr>
+    <td>{{ guest.booking_id }}</td>
+    <td>{{ guest.name }}</td>
+    <td>{{ guest.room_services }}</td>
+    <td>{{ guest.check_in }}</td>
+    <td>{{ guest.check_out }}</td>
+    <td>{{ guest.price }}</td>
+    <td>{{ guest.payment_options }}</td>
+    <td>{{ guest.status }}</td>
+    <td>{{ guest.actions }}</td>
+  </tr>
+  {% endfor %}
+</tbody>
+
+  </table>
+</section>
+
+<!-- Rooms and Services -->
+<section id="rooms" style="display:none;">
+  <h2 style="color:var(--gold);margin-bottom:20px;">Room Types</h2>
+  <div class="content-grid">
+    <div class="content-card" data-type="Standard Room" data-price="4500">
+      <img src="https://i.pinimg.com/1200x/42/b6/8c/42b68cd2490f7a0467234a71b4d4d6fb.jpg">
+      <h4>Standard Room</h4>
+      <p>Comfortable room with queen bed, free Wi-Fi, and a city view.</p>
+      <div class="card-buttons"><button class="book-btn">Book Now</button></div>
+    </div>
+    <div class="content-card" data-type="Deluxe Room" data-price="6500">
+      <img src="https://i.pinimg.com/1200x/27/45/53/2745534936873c626f6c33c0f73bda7b.jpg">
+      <h4>Deluxe Room</h4>
+      <p>Spacious room with king bed, minibar, and premium amenities.</p>
+      <div class="card-buttons"><button class="book-btn">Book Now</button></div>
+    </div>
+    <div class="content-card" data-type="Executive Suite" data-price="9200">
+      <img src="https://i.pinimg.com/1200x/7a/f0/f1/7af0f167853fa00a906fecd42d2f8401.jpg">
+      <h4>Executive Suite</h4>
+      <p>Luxury suite with living area, balcony, and complimentary breakfast.</p>
+      <div class="card-buttons"><button class="book-btn">Book Now</button></div>
+    </div>
+  </div>
+</section>
+
+<section id="services" style="display:none;">
+  <h2 style="color:var(--gold);margin-bottom:20px;">Services & Amenities</h2>
+  <div class="content-grid">
+    <div class="content-card" data-type="Spa & Wellness" data-price="1200">
+      <img src="https://i.pinimg.com/736x/3a/2b/0e/3a2b0e7f1d13afaf28a435ef7acc9a90.jpg">
+      <h4>Spa & Wellness</h4>
+      <p>Relax and rejuvenate with our massage, sauna, and wellness programs.</p>
+      <div class="card-buttons"><button class="book-btn">Book Now</button></div>
+    </div>
+    <div class="content-card" data-type="Event Halls" data-price="4500">
+      <img src="https://i.pinimg.com/736x/36/2f/bd/362fbdab4e02c9148ae64bda9d039af4.jpg">
+      <h4>Event Halls</h4>
+      <p>Spacious halls for weddings, corporate events, and private parties.</p>
+      <div class="card-buttons"><button class="book-btn">Book Now</button></div>
+    </div>
+    <div class="content-card" data-type="Other Amenities" data-price="800">
+      <img src="https://i.pinimg.com/736x/79/9e/5d/799e5d087273c5e4b56157701bc007b1.jpg">
+      <h4>Other Amenities</h4>
+      <p>Includes gym, swimming pool, parking, and complimentary breakfast.</p>
+      <div class="card-buttons"><button class="book-btn">Book Now</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- Booking Modal -->
+<div id="booking-modal">
+  <div class="modal-content">
+    <h3>Book Room/Service</h3>
+    <label>Type</label><input type="text" id="modal-type" readonly>
+    <label>Price (₱)</label><input type="text" id="modal-price" readonly>
+    <label>Check-in Date</label><input type="date" id="modal-checkin">
+    <label>Check-out Date</label><input type="date" id="modal-checkout">
+    <label>Number of Guests</label><input type="number" id="modal-guests" min="1" value="1">
+    <label>Payment Method</label>
+    <select id="modal-payment">
+      <option value="CASH">CASH</option>
+      <option value="CARD">CARD</option>
+      <option value="G-CASH">G-CASH</option>
+    </select>
+    <label>Special Requests</label><textarea id="modal-requests" rows="3"></textarea>
+    <button id="modal-submit">Confirm Booking</button>
+    <button class="cancel-btn" id="modal-cancel">Cancel</button>
+  </div>
+</div>
+
+<script>
+// ------------------------ Guest Info ------------------------
+let loggedInGuest = JSON.parse(localStorage.getItem('activeGuest')) || { username:'Jane Guest', email:'guest@example.com', memberSince:'2024' };
+document.getElementById('profile-name').value = loggedInGuest.username;
+document.getElementById('profile-email').value = loggedInGuest.email;
+document.getElementById('guest-name').textContent = loggedInGuest.username;
+document.getElementById('guest-email').textContent = loggedInGuest.email;
+document.getElementById('member-since').textContent = "Member since " + loggedInGuest.memberSince;
+
+// ------------------------ Room Prices ------------------------
+const roomPrices = {};
+document.querySelectorAll('.content-card').forEach(card=>roomPrices[card.dataset.type]=parseFloat(card.dataset.price));
+
+// ------------------------ Reservations ------------------------
+let reservations = JSON.parse(localStorage.getItem('guestBookings')) || [];
+let allBookings = JSON.parse(localStorage.getItem('allBookings')) || [];
+
+// ------------------------ Navigation ------------------------
+document.querySelectorAll('.nav-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('main section').forEach(s=>s.style.display='none');
+    document.getElementById(btn.dataset.section).style.display='block';
+  });
+});
+
+// ------------------------ Profile Upload ------------------------
+document.getElementById('profile-file').addEventListener('change', e=>{
+  let f=e.target.files[0];
+  if(f){let r=new FileReader(); r.onload=()=>document.getElementById('guest-avatar').src=r.result; r.readAsDataURL(f);}
+});
+
+// ------------------------ Save Profile ------------------------
+document.getElementById('saveProfileBtn').addEventListener('click', ()=>{
+  loggedInGuest.username = document.getElementById('profile-name').value;
+  loggedInGuest.email = document.getElementById('profile-email').value;
+  localStorage.setItem('activeGuest', JSON.stringify(loggedInGuest));
+  document.getElementById('guest-name').textContent = loggedInGuest.username;
+  document.getElementById('guest-email').textContent = loggedInGuest.email;
+  alert("Profile saved!");
+});
+
+// ------------------------ Logout ------------------------
+document.getElementById('logoutBtn').addEventListener('click', ()=>{
+  localStorage.removeItem('activeGuest');
+  alert("Logged out");
+  setTimeout(()=>location.href="login.html",1000);
+});
+
+// ------------------------ Helpers ------------------------
+function safeParse(val){ try{return JSON.parse(val);}catch(e){return null;} }
+function readKey(key){return JSON.parse(localStorage.getItem(key)||'[]');}
+function writeKey(key,val){localStorage.setItem(key,JSON.stringify(val));}
+function renderGuestBookings(){ renderReservations(); }
+
+// ------------------------ Update Storage ------------------------
+function updateBookingsStorage(){
+  localStorage.setItem('guestBookings', JSON.stringify(reservations));
+  
+  // Update allBookings for admin/staff automatically
+  allBookings = JSON.parse(localStorage.getItem('allBookings')||'[]').filter(b=>b.guest!==loggedInGuest.username).concat(reservations);
+  localStorage.setItem('allBookings', JSON.stringify(allBookings));
+}
+
+// ------------------------ Render Reservations ------------------------
+function renderReservations(){
+  let tbody = document.getElementById('reservation-table-body');
+  tbody.innerHTML = '';
+  reservations.forEach((r,i)=>{
+    let price = roomPrices[r.type] || 0;
+    let tr = document.createElement('tr');
+    tr.innerHTML=`
+      <td>${r.id}</td><td>${r.guest}</td><td>${r.type}</td>
+      <td>${r.checkin}</td><td>${r.checkout}</td><td>₱${price}</td>
+      <td>${r.payment}</td><td>${r.status}</td>
+      <td>
+        <button class="btn-modify" data-index="${i}">Modify</button>
+        <button class="btn-cancel" data-index="${i}">Cancel</button>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+
+  document.querySelectorAll('.btn-modify').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      let idx = btn.dataset.index;
+      openBookingModal(reservations[idx], idx);
+    });
+  });
+  document.querySelectorAll('.btn-cancel').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      let idx = btn.dataset.index;
+      if(confirm("Are you sure you want to cancel this booking?")){
+        reservations.splice(idx,1); updateBookingsStorage(); renderReservations();
+      }
+    });
+  });
+
+  document.getElementById('upcoming-count').textContent = reservations.length;
+  document.getElementById('pending-count').textContent = reservations.filter(r=>r.status==='Pending').length;
+  document.getElementById('total-count').textContent = reservations.length;
+}
+
+// ------------------------ Booking Modal ------------------------
+function openBookingModal(data, idx=null){
+  const modal = document.getElementById('booking-modal');
+  modal.style.display='flex';
+  document.getElementById('modal-type').value = data.type;
+  document.getElementById('modal-price').value = "₱"+(roomPrices[data.type]||0);
+  document.getElementById('modal-checkin').value = data.checkin || '';
+  document.getElementById('modal-checkout').value = data.checkout || '';
+  document.getElementById('modal-guests').value = data.guests || 1;
+  document.getElementById('modal-payment').value = data.payment || 'CASH';
+  document.getElementById('modal-requests').value = data.requests || '';
+
+  document.getElementById('modal-submit').onclick = ()=>{
+    data.checkin = document.getElementById('modal-checkin').value;
+    data.checkout = document.getElementById('modal-checkout').value;
+    data.guests = document.getElementById('modal-guests').value;
+    data.payment = document.getElementById('modal-payment').value;
+    data.requests = document.getElementById('modal-requests').value;
+    data.status = 'Pending';
+    if(idx===null){ reservations.push(data); }
+    updateBookingsStorage(); modal.style.display='none'; renderReservations();
+  };
+}
+
+// Close modal
+document.getElementById('modal-cancel').addEventListener('click', ()=>document.getElementById('booking-modal').style.display='none');
+
+// ------------------------ Book from Cards ------------------------
+document.querySelectorAll('.book-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    let card = btn.closest('.content-card');
+    let type = card.dataset.type;
+    openBookingModal({
+      id: 'BKG'+String(Date.now()).slice(-6),
+      guest: loggedInGuest.username,
+      type: type
+    });
+    document.querySelector('.nav-btn[data-section="reservations"]').click();
+  });
+});
+
+// ------------------------ Admin Storage Sync ------------------------
+window.addEventListener('storage', ev=>{
+  if(ev.key==='allBookings'){
+    const changed = safeParse(ev.newValue)||[];
+    if(!Array.isArray(changed)) return;
+    let guest = readKey('guestBookings');
+    changed.forEach(ch=>{
+      const idx = guest.findIndex(x=>x.id===ch.id);
+      if(idx>=0){ guest[idx] = {...guest[idx], ...ch}; } 
+      else { guest.unshift(ch); }
+    });
+    writeKey('guestBookings', guest);
+    renderGuestBookings();
+  }
+});
+
+renderReservations();
+</script>
+
+</body>
+</html>
