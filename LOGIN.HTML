@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NAROCAFRA HOTEL — Login / Register</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+    }
+    body {
+      background: url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1600&q=80')
+      no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      color: #fff;
+    }
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 0;
+    }
+    .form-container {
+      width: 350px;
+      max-width: 95vw;
+      background: rgba(255,255,255,0.25);
+      border-radius: 16px;
+      backdrop-filter: blur(9px);
+      position: relative;
+      z-index: 2;
+      overflow: hidden;
+      box-shadow: 0 8px 35px rgba(212,175,55,0.4);
+      border: 2px solid #d4af37;
+    }
+    .slides-wrapper {
+      display: flex;
+      width: 700px;
+      transition: transform 0.45s ease;
+    }
+    .slide-panel {
+      width: 350px;
+      padding: 2rem;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+      color: #f4e4bc;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 0.9rem;
+      color: #f4e4bc;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.6rem;
+      border-radius: 8px;
+      border: 2px solid #d4af37;
+      background: rgba(255,255,255,0.9);
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+    input:focus, select:focus {
+      border-color: #b28f24;
+      outline: none;
+    }
+    button {
+      width: 100%;
+      background: linear-gradient(135deg, #d4af37, #b28f24);
+      padding: 0.7rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+      font-weight: bold;
+      box-shadow: 0 4px 15px rgba(212,175,55,0.3);
+      margin-bottom: 0.5rem;
+    }
+    button:hover {
+      background: linear-gradient(135deg, #b28f24, #d4af37);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(212,175,55,0.5);
+    }
+    .toggle-link {
+      text-align: center;
+      margin-top: 0.8rem;
+    }
+    .toggle-link a {
+      color: #f4e4bc;
+      cursor: pointer;
+      text-decoration: underline;
+      transition: color 0.3s ease;
+    }
+    .toggle-link a:hover {
+      color: #d4af37;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+  <div class="form-container">
+    <div class="slides-wrapper" id="slidesWrapper">
+
+      <!-- LOGIN PANEL -->
+      <section class="slide-panel">
+        <h2>Login</h2>
+        <form id="loginForm">
+          <label>Email</label>
+          <input type="email" id="login-email" required>
+          <label>Password</label>
+          <input type="password" id="login-password" required>
+          <label>Select Role</label>
+          <select id="login-role" required>
+            <option disabled selected>Select role</option>
+            <option value="admin">Admin</option>
+            <option value="staff">Staff</option>
+            <option value="user">Guest</option>
+          </select>
+          <button type="submit">Login</button>
+        </form>
+        <p class="toggle-link">No account?
+          <a id="toRegister">Create Account</a>
+        </p>
+      </section>
+
+      <!-- REGISTER PANEL -->
+      <section class="slide-panel">
+        <h2>Create Account</h2>
+        <form id="registerForm">
+          <label>Username</label>
+          <input type="text" id="reg-user" required>
+          <label>Email</label>
+          <input type="email" id="reg-email" required>
+          <label>Password</label>
+          <input type="password" id="reg-pass" required>
+          <label>Confirm Password</label>
+          <input type="password" id="reg-confirm" required>
+          <button type="submit">Register</button>
+        </form>
+        <p class="toggle-link">Already have an account?
+          <a id="toLogin">Login here</a>
+        </p>
+      </section>
+
+    </div>
+  </div>
+
+ <script>
+const slidesWrapper = document.getElementById("slidesWrapper");
+
+// Toggle to Register panel
+document.getElementById("toRegister").addEventListener("click", () => {
+  slidesWrapper.style.transform = "translateX(-350px)";
+});
+
+// Toggle back to Login panel
+document.getElementById("toLogin").addEventListener("click", () => {
+  slidesWrapper.style.transform = "translateX(0)";
+});
+
+// Login form submission
+document.getElementById("loginForm").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  const email = document.getElementById("login-email").value.trim();
+  const password = document.getElementById("login-password").value.trim();
+  const role = document.getElementById("login-role").value;
+
+  if(!email || !password || role === "Select role"){
+      alert("Please fill all fields and select a role!");
+      return;
+  }
+
+  const username = email.split("@")[0];
+
+  // Set member since if not already
+  if(!localStorage.getItem("guest-member-since")){
+      localStorage.setItem("guest-member-since", new Date().toISOString().split("T")[0]);
+  }
+
+  const guestData = {
+      username: username,
+      email: email,
+      memberSince: localStorage.getItem("guest-member-since")
+  };
+
+  if(role === "user" || role === "guest"){
+      localStorage.setItem("activeGuest", JSON.stringify(guestData));
+      window.location.href = "/guest/"; // Django URL for Guest Dashboard
+  } else if(role === "admin"){
+      localStorage.setItem("activeAdmin", JSON.stringify({email: email, username: username}));
+      window.location.href = "/admin-dashboard/"; // Django URL for Admin Dashboard
+  } else if(role === "staff"){
+      localStorage.setItem("activeStaff", JSON.stringify({email: email, username: username}));
+      window.location.href = "/staff/"; // Django URL for Staff Dashboard
+  }
+});
+
+// Optional: Register form (you can expand later)
+document.getElementById("registerForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  const username = document.getElementById("reg-user").value.trim();
+  const email = document.getElementById("reg-email").value.trim();
+  const password = document.getElementById("reg-pass").value.trim();
+  const confirm = document.getElementById("reg-confirm").value.trim();
+
+  if(!username || !email || !password || !confirm){
+    alert("Please fill all fields!");
+    return;
+  }
+
+  if(password !== confirm){
+    alert("Passwords do not match!");
+    return;
+  }
+
+  alert("Account registered successfully! You can now login.");
+  slidesWrapper.style.transform = "translateX(0)";
+});
+</script>
+</body>
+</html>
