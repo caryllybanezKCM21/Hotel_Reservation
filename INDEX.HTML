@@ -1,0 +1,362 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NAROCAFRA HOTEL - Luxury Stays</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #d4af37;
+  --dark-gold: #b28f24;
+  --light-gold: #f4e4bc;
+  --bg: #fdf8f0;
+  --card-bg: #fffaf0;
+  --text: #2b2b2b;
+  --text-light: #6b7280;
+  --luxury-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Poppins', sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Navigation */
+nav {
+  width: 100%;
+  background: url('https://images.unsplash.com/photo-1505489304217-7f1511680c7e?auto=format&fit=crop&w=1600&q=80') no-repeat center/cover;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  box-shadow: var(--luxury-shadow);
+  border-bottom: 3px solid var(--gold);
+  position: fixed;
+  top: 0;
+  z-index: 10;
+}
+
+nav .logo h1 {
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: var(--gold);
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+nav ul li a {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--gold);
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+nav ul li a:hover {
+  background: var(--gold);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.5);
+}
+
+.login-btn {
+  background: linear-gradient(135deg, var(--gold), var(--dark-gold)) !important;
+  border: none !important;
+  font-weight: 700 !important;
+}
+
+/* Hero Section */
+header {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1600&q=80') no-repeat center/cover;
+  color: white;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+  position: relative;
+}
+
+header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0,0,0,0.5), rgba(212, 175, 55, 0.2));
+  z-index: 1;
+}
+
+header > * { position: relative; z-index: 2; }
+
+header h2 {
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  color: var(--light-gold);
+  letter-spacing: 1px;
+}
+
+header p {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  max-width: 600px;
+  color: rgba(244,228,188,0.95);
+}
+
+button.primary-btn {
+  background: linear-gradient(135deg, var(--gold), var(--dark-gold));
+  border: 2px solid var(--gold);
+  color: white;
+  padding: 1rem 2.5rem;
+  border-radius: 60px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+button.primary-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+}
+
+/* Main Content */
+main {
+  padding: 3rem 2rem;
+  max-width: 1200px;
+  margin: auto;
+  margin-top: -4rem;
+  background: var(--bg);
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+}
+
+section h2 {
+  text-align: center;
+  color: var(--gold);
+  margin-bottom: 2rem;
+  font-size: 1.8rem; /* Reduced size for better readability */
+  line-height: 1.4;  /* Spacing for better clarity */
+  letter-spacing: 1px;
+  font-weight: 700;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.2); /* Subtle premium look */
+}
+
+
+/* Cards */
+.cards {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 2rem;
+  align-items: stretch;
+}
+
+.card {
+  position: relative;
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 1.5rem;
+  flex: 1 1 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  box-shadow: var(--luxury-shadow);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  border: 1px solid var(--light-gold);
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 35px rgba(212, 175, 55, 0.5);
+}
+
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  transition: transform 0.3s ease;
+  border: 2px solid var(--gold);
+}
+
+.card:hover img { transform: scale(1.05); }
+
+.card h3 {
+  margin-bottom: 0.5rem;
+  color: var(--gold);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.card p {
+  font-size: 0.95rem;
+  color: var(--text-light);
+  margin-bottom: 1rem;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 20;
+  inset: 0;
+  background-color: rgba(0,0,0,0.7);
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.modal-content {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 16px;
+  max-width: 600px;
+  width: 100%;
+  text-align: left;
+  position: relative;
+  box-shadow: var(--luxury-shadow);
+}
+
+.modal-content h3 { color: var(--gold); margin-bottom: 1rem; }
+.modal-content p { margin-bottom: 1rem; }
+
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: var(--gold);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Footer */
+footer {
+  background: linear-gradient(135deg, #222, #333);
+  color: white;
+  text-align: center;
+  padding: 3rem 1rem;
+  font-size: 0.85rem;
+  border-top: 3px solid var(--gold);
+}
+
+footer a { color: var(--gold); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+
+/* Responsive */
+@media (min-width: 769px) {
+  section h2 {
+    font-size: 2rem;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><h1>NAROCAFRA HOTEL</h1></div>
+  <ul>
+    <li><a href="{% url 'home' %}">Home</a></li>
+    <li><a href="{% url 'contact' %}">Contact</a></li>
+    <li><a href="{% url 'login' %}" class="login-btn">Login</a></li>
+  </ul>
+</nav>
+
+<header>
+  <h2>Luxury Stays. Exceptional Experiences.</h2>
+  <p>Enjoy panoramic suites, fine dining, and serene spaces crafted to elevate every moment of your visit.</p>
+  <button class="primary-btn" onclick="alert('Book Now clicked')">Reserve Your Stay</button>
+</header>
+
+<main>
+  <section>
+    <h2>Exclusive Rooms & Premium Services</h2>
+    <div class="cards">
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=500&q=80" alt="Deluxe Room">
+        <h3>Panoramic Comfort</h3>
+        <p>Spacious suites with city views, king-sized beds, and personalized concierge service.</p>
+        <button class="primary-btn" onclick="openModal('deluxe')">Explore</button>
+      </div>
+      <div class="card">
+        <img src="https://i.pinimg.com/1200x/ae/05/d2/ae05d2bc8932b339a3f833513e15e526.jpg" alt="Spa Retreat">
+        <h3>Rejuvenate Your Senses</h3>
+        <p>Relax with massages, facials, and aromatherapy in our tranquil spa retreat.</p>
+        <button class="primary-btn" onclick="openModal('spa')">Discover</button>
+      </div>
+      <div class="card">
+        <img src="https://i.pinimg.com/1200x/f3/c4/ab/f3c4abded1846802415d038551270f8c.jpg" alt="Gourmet Dining">
+        <h3>Culinary Masterpieces</h3>
+        <p>Savor exquisite cuisine prepared by award-winning chefs with fresh local ingredients.</p>
+        <button class="primary-btn" onclick="openModal('dining')">Taste</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Modals -->
+<div id="deluxe" class="modal">
+  <div class="modal-content">
+    <button class="close-btn" onclick="closeModal('deluxe')">&times;</button>
+    <h3>Deluxe Suite Details</h3>
+    <p>King-sized beds, panoramic views, high-speed Wi-Fi, mini-bar, and concierge services.</p>
+    <p>Perfect for couples, families, or business travelers seeking luxury and comfort.</p>
+  </div>
+</div>
+
+<div id="spa" class="modal">
+  <div class="modal-content">
+    <button class="close-btn" onclick="closeModal('spa')">&times;</button>
+    <h3>Spa & Wellness Retreat Details</h3>
+    <p>Relax with massages, facials, aromatherapy, and holistic treatments in a serene environment.</p>
+  </div>
+</div>
+
+<div id="dining" class="modal">
+  <div class="modal-content">
+    <button class="close-btn" onclick="closeModal('dining')">&times;</button>
+    <h3>Gourmet Dining Experience Details</h3>
+    <p>Multi-cuisine dining crafted by award-winning chefs using fresh local ingredients.</p>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2025 Narocafra Hotel. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+  <p>Follow us: <a href="#"><i class="fab fa-facebook"></i></a> <a href="#"><i class="fab fa-instagram"></i></a> <a href="#"><i class="fab fa-twitter"></i></a></p>
+</footer>
+
+<script>
+function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+</script>
+
+</body>
+</html>
