@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NAROCAFRA HOTEL - Contact Us</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+:root {
+  --gold: #d4af37;{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NAROCAFRA HOTEL - Contact Us</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+:root {
+  --gold: #d4af37;
+  --dark-gold: #b28f24;
+  --light-gold: #f4e4bc;
+  --bg: #fdf8f0;
+  --card-bg: #fffaf0;
+  --text: #2b2b2b;
+  --text-light: #6b7280;
+  --luxury-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { 
+  font-family: "Poppins", sans-serif; 
+  color: var(--text); 
+  background: var(--bg); 
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+nav {
+  width: 100%;
+  background: url('https://images.unsplash.com/photo-1505489304217-7f1511680c7e?auto=format&fit=crop&w=1600&q=80') no-repeat center/cover;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  box-shadow: var(--luxury-shadow);
+  border-bottom: 3px solid var(--gold);
+  position: fixed;
+  top: 0;
+  z-index: 10;
+}
+nav .logo h1 { 
+  font-size: 2rem; 
+  font-weight: 900; 
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+  letter-spacing: 1px;
+  color: var(--gold);
+}
+nav ul { 
+  list-style: none; 
+  display: flex; 
+  gap: 1rem; 
+  align-items: center;
+}
+nav ul li a { 
+  background: rgba(0,0,0,0.3); 
+  border: 1px solid var(--gold);
+  padding: 0.6rem 1rem; 
+  border-radius: 8px; 
+  color: white; 
+  cursor: pointer; 
+  transition: all 0.3s ease; 
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+  text-decoration: none;
+}
+nav ul li a:hover { 
+  background: var(--gold); 
+  color: #fff; 
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.5);
+}
+.login-btn {
+  background: linear-gradient(135deg, var(--gold), var(--dark-gold)) !important;
+  border: none !important;
+  font-weight: 700 !important;
+}
+
+/* Header */
+header {
+  height: 40vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1600&q=80') no-repeat center/cover;
+  color: white;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+  position: relative;
+}
+header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(212, 175, 55, 0.2));
+  z-index: 1;
+}
+header > * {
+  position: relative;
+  z-index: 2;
+}
+header h2 { 
+  font-size: 3rem; 
+  margin-bottom: 1rem; 
+  font-weight: 700;
+  color: var(--light-gold);
+}
+header p { 
+  font-size: 1.2rem; 
+  max-width: 600px;
+}
+
+/* Main */
+main { 
+  padding: 6rem 2rem 4rem; 
+  max-width: 1000px; 
+  margin: auto; 
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+/* Contact Info */
+.contact-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: space-between;
+}
+.contact-card {
+  flex: 1 1 300px;
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: var(--luxury-shadow);
+  text-align: center;
+}
+.contact-card h3 { color: var(--gold); margin-bottom: 1rem; }
+.contact-card p { color: var(--text-light); line-height: 1.5; }
+
+/* Contact Form */
+form {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: var(--luxury-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+input, textarea {
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--gold);
+  font-size: 1rem;
+  resize: none;
+}
+button.submit-btn {
+  background: linear-gradient(135deg, var(--gold), var(--dark-gold));
+  border: none;
+  color: white;
+  padding: 1rem 2rem;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+button.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+}
+
+/* Map */
+.map-container {
+  width: 100%;
+  height: 400px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--luxury-shadow);
+}
+
+/* Footer */
+footer {
+  background: linear-gradient(135deg, #222, #333);
+  color: white;
+  text-align: center;
+  padding: 2rem;
+  font-size: 0.9rem;
+  border-top: 3px solid var(--gold);
+}
+footer a {
+  color: var(--gold);
+  text-decoration: none;
+}
+footer a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  header h2 { font-size: 2rem; }
+  header p { font-size: 1rem; }
+  .contact-info { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><h1><i class="fas fa-crown"></i> NAROCAFRA HOTEL</h1></div>
+  <ul>
+    <li><a href="{% url 'home' %}">Home</a></li>
+    <li><a href="{% url 'contact' %}">Contact</a></li>
+    <li><a href="{% url 'login' %}" class="login-btn">Login</a></li>
+  </ul>
+</nav>
+
+<header>
+  <h2>Contact Us</h2>
+  <p>We’d love to hear from you! Reach out to us or send a message using the form below.</p>
+</header>
+
+<main>
+  <!-- Contact Information -->
+  <div class="contact-info">
+    <div class="contact-card">
+      <h3>Address</h3>
+      <p>123 Street, Golden City, Country 4567</p>
+    </div>
+    <div class="contact-card">
+      <h3>Phone</h3>
+      <p>+123 456 7890<br>+123 987 6543</p>
+    </div>
+    <div class="contact-card">
+      <h3>Email</h3>
+      <p>info@narocafrahotel.com<br>support@narocafrahotel.com</p>
+    </div>
+  </div>
+
+  <!-- Contact Form -->
+  <form onsubmit="alert('Thank you for your message!'); return false;">
+    <input type="text" placeholder="Your Name" required>
+    <input type="email" placeholder="Your Email" required>
+    <input type="text" placeholder="Subject" required>
+    <textarea rows="6" placeholder="Your Message" required></textarea>
+    <button type="submit" class="submit-btn">Send Message</button>
+  </form>
+
+  <!-- Google Map -->
+  <div class="map-container">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.0191675017937!2d-122.41941508468143!3d37.77492927975954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80858064dcd0c7ab%3A0x4b2c1e3b0a4a1c6!2sLuxury%20Hotel!5e0!3m2!1sen!2sus!4v1699999999999!5m2!1sen!2sus"
+      width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+  </div>
+</main>
+
+<footer>
+  <p>&copy; 2025 Narocafra Hotel. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+  <p>Follow us: <a href="#"><i class="fab fa-facebook"></i></a> <a href="#"><i class="fab fa-instagram"></i></a> <a href="#"><i class="fab fa-twitter"></i></a></p>
+</footer>
+
+</body>
+</html>
+
+  --dark-gold: #b28f24;
+  --light-gold: #f4e4bc;
+  --bg: #fdf8f0;
+  --card-bg: #fffaf0;
+  --text: #2b2b2b;
+  --text-light: #6b7280;
+  --luxury-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { 
+  font-family: "Poppins", sans-serif; 
+  color: var(--text); 
+  background: var(--bg); 
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+nav {
+  width: 100%;
+  background: url('https://images.unsplash.com/photo-1505489304217-7f1511680c7e?auto=format&fit=crop&w=1600&q=80') no-repeat center/cover;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  box-shadow: var(--luxury-shadow);
+  border-bottom: 3px solid var(--gold);
+  position: fixed;
+  top: 0;
+  z-index: 10;
+}
+nav .logo h1 { 
+  font-size: 2rem; 
+  font-weight: 900; 
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+  letter-spacing: 1px;
+  color: var(--gold);
+}
+nav ul { 
+  list-style: none; 
+  display: flex; 
+  gap: 1rem; 
+  align-items: center;
+}
+nav ul li button { 
+  background: rgba(0,0,0,0.3); 
+  border: 1px solid var(--gold);
+  padding: 0.6rem 1rem; 
+  border-radius: 8px; 
+  color: white; 
+  cursor: pointer; 
+  transition: all 0.3s ease; 
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+}
+nav ul li button:hover { 
+  background: var(--gold); 
+  color: #fff; 
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.5);
+}
+.login-btn {
+  background: linear-gradient(135deg, var(--gold), var(--dark-gold)) !important;
+  border: none !important;
+  font-weight: 700 !important;
+}
+
+/* Header */
+header {
+  height: 40vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1600&q=80') no-repeat center/cover;
+  color: white;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+  position: relative;
+}
+header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(212, 175, 55, 0.2));
+  z-index: 1;
+}
+header > * {
+  position: relative;
+  z-index: 2;
+}
+header h2 { 
+  font-size: 3rem; 
+  margin-bottom: 1rem; 
+  font-weight: 700;
+  color: var(--light-gold);
+}
+header p { 
+  font-size: 1.2rem; 
+  max-width: 600px;
+}
+
+/* Main */
+main { 
+  padding: 6rem 2rem 4rem; 
+  max-width: 1000px; 
+  margin: auto; 
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+/* Contact Info */
+.contact-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: space-between;
+}
+.contact-card {
+  flex: 1 1 300px;
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: var(--luxury-shadow);
+  text-align: center;
+}
+.contact-card h3 { color: var(--gold); margin-bottom: 1rem; }
+.contact-card p { color: var(--text-light); line-height: 1.5; }
+
+/* Contact Form */
+form {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: var(--luxury-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+input, textarea {
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--gold);
+  font-size: 1rem;
+  resize: none;
+}
+button.submit-btn {
+  background: linear-gradient(135deg, var(--gold), var(--dark-gold));
+  border: none;
+  color: white;
+  padding: 1rem 2rem;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+button.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+}
+
+/* Map */
+.map-container {
+  width: 100%;
+  height: 400px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--luxury-shadow);
+}
+
+/* Footer */
+footer {
+  background: linear-gradient(135deg, #222, #333);
+  color: white;
+  text-align: center;
+  padding: 2rem;
+  font-size: 0.9rem;
+  border-top: 3px solid var(--gold);
+}
+footer a {
+  color: var(--gold);
+  text-decoration: none;
+}
+footer a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  header h2 { font-size: 2rem; }
+  header p { font-size: 1rem; }
+  .contact-info { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><h1><i class="fas fa-crown"></i> NAROCAFRA HOTEL</h1></div>
+  <ul>
+    <li><button onclick="window.location.href='index.html'">Home</button></li>
+    <li><button onclick="window.location.href='contact.html'">Contact</button></li>
+    <li><button class="login-btn" onclick="window.location.href='Login.html'">Login</button></li>
+  </ul>
+</nav>
+
+<header>
+  <h2>Contact Us</h2>
+  <p>We’d love to hear from you! Reach out to us or send a message using the form below.</p>
+</header>
+
+<main>
+  <!-- Contact Information -->
+  <div class="contact-info">
+    <div class="contact-card">
+      <h3>Address</h3>
+      <p>123 Street, Golden City, Country 4567</p>
+    </div>
+    <div class="contact-card">
+      <h3>Phone</h3>
+      <p>+123 456 7890<br>+123 987 6543</p>
+    </div>
+    <div class="contact-card">
+      <h3>Email</h3>
+      <p>info@narocafrahotel.com<br>support@narocafrahotel.com</p>
+    </div>
+  </div>
+
+  <!-- Contact Form -->
+  <form onsubmit="alert('Thank you for your message!'); return false;">
+    <input type="text" placeholder="Your Name" required>
+    <input type="email" placeholder="Your Email" required>
+    <input type="text" placeholder="Subject" required>
+    <textarea rows="6" placeholder="Your Message" required></textarea>
+    <button type="submit" class="submit-btn">Send Message</button>
+  </form>
+
+  <!-- Google Map -->
+  <div class="map-container">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.0191675017937!2d-122.41941508468143!3d37.77492927975954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80858064dcd0c7ab%3A0x4b2c1e3b0a4a1c6!2sLuxury%20Hotel!5e0!3m2!1sen!2sus!4v1699999999999!5m2!1sen!2sus"
+      width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+  </div>
+</main>
+
+<footer>
+  <p>&copy; 2025 Narocafra Hotel. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+  <p>Follow us: <a href="#"><i class="fab fa-facebook"></i></a> <a href="#"><i class="fab fa-instagram"></i></a> <a href="#"><i class="fab fa-twitter"></i></a></p>
+</footer>
+
+</body>
+</html>
